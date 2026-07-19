@@ -10,11 +10,10 @@ import java.util.stream.Collectors;
 
 public class Logic {
 
-    ScholarshipPackageSetup setUp = new ScholarshipPackageSetup();
     //xét xem sv có đủ dk nhận học bổng hay không
-    public void Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String faculty,  int min_Credits) {
-        if (Students == null || list == null || Students.isEmpty() || list.isEmpty()) {
-            return;
+    public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String faculty,  int min_Credits) {
+        if (Students == null || list == null || Students.isEmpty() || list.size() < 3) {
+            return List.of();
         }
         ScholarshipPackage excellent_Scholarship    = list.get(0);
         ScholarshipPackage good_Scholarship         = list.get(1);
@@ -69,6 +68,7 @@ public class Logic {
                 s.setScholarship_Name("chưa có học bổng");
             }
         }
+        return student_Faculty;
     }
 
 

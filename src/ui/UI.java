@@ -43,10 +43,10 @@ public class UI {
                     setUp.input_Good_Quota(list_Scholarships);
                     setUp.input_fairlyGood_Quota(list_Scholarships);
 
-                    logic.Considering_Scholarships(list_Students, list_Scholarships, faculty, min_Credits);
+                    List<Student> studentFaculty = logic.Considering_Scholarships(list_Students, list_Scholarships, faculty, min_Credits);
                     System.out.println("============Danh sách sinh viên sau khi xét học bổng===========");
 
-                    for (Student student : list_Students) {
+                    for (Student student : studentFaculty) {
                         System.out.println("#" + student.getId() + " - " + student.getName() + " - Học bổng: " + student.getScholarship_Name());
                     }
 
