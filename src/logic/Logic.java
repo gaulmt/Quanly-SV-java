@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class Logic {
 
     //xét xem sv có đủ dk nhận học bổng hay không
-    public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String faculty,  int min_Credits) {
+    public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String faculty) {
         if (Students == null || list == null || Students.isEmpty() || list.size() < 3) {
             return List.of();
         }
@@ -42,7 +42,7 @@ public class Logic {
                     gpa >= excellent_Scholarship.getMin_Gpa()
                             && traning_Point >= excellent_Scholarship.getMin_Traning_Point()
                             && excellent_slot != 0
-                            && credit >= min_Credits) {
+                            && credit >= 15) {
 
                 excellent_slot--;
                 s.setScholarship_Name(excellent_Scholarship.getName());
@@ -51,7 +51,7 @@ public class Logic {
                     gpa >= good_Scholarship.getMin_Gpa()
                             && traning_Point >= good_Scholarship.getMin_Traning_Point()
                             && good_slot != 0
-                            && credit >= min_Credits) {
+                            && credit >= 15) {
                 good_slot--;
                 s.setScholarship_Name(good_Scholarship.getName());
 
@@ -59,7 +59,7 @@ public class Logic {
                     gpa >= fairlyGood_Scholarship.getMin_Gpa()
                             && traning_Point >= fairlyGood_Scholarship.getMin_Traning_Point()
                             && fairlyGood_slot != 0
-                            && credit >= min_Credits) {
+                            && credit >= 15) {
 
                 fairlyGood_slot--;
                 s.setScholarship_Name(fairlyGood_Scholarship.getName());

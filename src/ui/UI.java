@@ -38,12 +38,11 @@ public class UI {
                     List<ScholarshipPackage> list_Scholarships = ScholarshipPackage.get_Scholarship_List();
 
                     String faculty = setUp.input_Faculty();
-                    int min_Credits = setUp.inputMin_totalCredits();
                     setUp.input_Excellent_Quota(list_Scholarships);
                     setUp.input_Good_Quota(list_Scholarships);
                     setUp.input_fairlyGood_Quota(list_Scholarships);
 
-                    List<Student> studentFaculty = logic.Considering_Scholarships(list_Students, list_Scholarships, faculty, min_Credits);
+                    List<Student> studentFaculty = logic.Considering_Scholarships(list_Students, list_Scholarships, faculty);
                     System.out.println("============Danh sách sinh viên sau khi xét học bổng===========");
 
                     for (Student student : studentFaculty) {

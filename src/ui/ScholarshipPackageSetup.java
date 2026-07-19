@@ -29,22 +29,6 @@ public class ScholarshipPackageSetup {
         }
     }
 
-    public int inputMin_totalCredits(){
-        while(true){
-            try{
-                System.out.print("Nhập tín chỉ tối thiểu trong kỳ: ");
-                int min_Credits = Integer.parseInt(input());
-                if(min_Credits > 0){
-                    return min_Credits;
-                }
-                System.out.println("Tín chỉ tối thiểu không được là số âm!");
-            }catch (NumberFormatException e){
-                System.out.println("Tín chỉ phải là một con số!");
-            }
-
-        }
-    }
-
 
     private void inputQuota(List<ScholarshipPackage> list, int index, String label) {
         while (true) {
