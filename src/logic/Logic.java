@@ -4,6 +4,7 @@ import model.ScholarshipPackage;
 import model.Student;
 import ui.ScholarshipPackageSetup;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +13,8 @@ public class Logic {
 
     //xét xem sv có đủ dk nhận học bổng hay không
     public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String faculty) {
-        if (Students == null || list == null || Students.isEmpty() || list.size() < 3) {
-            return List.of();
+        if (Students == null || list == null || Students.isEmpty()) {
+            return new ArrayList<>();
         }
         ScholarshipPackage excellent_Scholarship    = list.get(0);
         ScholarshipPackage good_Scholarship         = list.get(1);

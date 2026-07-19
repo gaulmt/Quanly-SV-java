@@ -83,4 +83,6 @@ public class Student {
     public void setScholarship_Name(String scholarship_Name) {
         this.scholarship_Name = scholarship_Name;
     }
+
+
 }

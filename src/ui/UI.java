@@ -20,18 +20,27 @@ public class UI {
             System.out.println("|| 1.Nhập thêm sinh viên mới                        ||");
             System.out.println("|| 2.Hiển thị danh sách sinh viên hiện tại          ||");
             System.out.println("|| 3.xét học bổng                                   ||");
-            System.out.println("|| 4.sắp xếp danh sách                              ||");
-            System.out.println("|| 5.meo meo                                        ||");
-            System.out.println("|| 6.gâu gâu                                        ||");
-            System.out.println("|| 7.helo kitty                                     ||");
+            System.out.println("|| 4.sắp xếp danh sách theo id                      ||");
+            System.out.println("|| 5.Nhập vào file sinh viên                        ||");
+            System.out.println("|| 6.xuất file sinh viên theo khoa                  ||");
             System.out.println("|| 0.thoát chương trình                             ||");
             System.out.println("======================================================");
             System.out.print("Mời bạn chọn chức năng: ");
             choice = sc.nextInt();
             switch (choice) {
                 case 1:
+
+                    //coming soon
                     break;
                 case 2:
+                    System.out.println("============Danh sách sinh viên hiện tại===========");
+                    List<Student> students = repo.get_All_Students();
+                    for (Student s : students){
+                        System.out.println( s.getId() + " "
+                                            + s.getName() + " "
+                                            + s.getGpa() + " "
+                                            + s.getCredits());
+                    }
                     break;
                 case 3:
                     List<Student> list_Students = repo.get_All_Students();
@@ -64,6 +73,7 @@ public class UI {
         }
         while (choice != 0);
     }
+
 
     private void clear(){
         System.out.println("Nhân enter để tiếp tục...........");

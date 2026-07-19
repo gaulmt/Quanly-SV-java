@@ -16,12 +16,13 @@ public class ScholarshipPackageSetup {
     public String input_Faculty(List<Student> students) {
         List<String> faculty_List = new ArrayList<>();
         for (Student s : students) {
-            String faculty = s.getFaculty_Name();
-            if (faculty != null && !faculty_List.contains(faculty)) {
+            String faculty = s.getFaculty_Name().toUpperCase();
+            if (!faculty_List.contains(faculty)) {
                 faculty_List.add(faculty);
             }
         }
-        Collections.sort(faculty_List);
+
+        faculty_List.sort(String::compareTo);
 
 
         while (true) {
