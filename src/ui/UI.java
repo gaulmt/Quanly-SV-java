@@ -37,7 +37,7 @@ public class UI {
                     List<Student> list_Students = repo.get_All_Students();
                     List<ScholarshipPackage> list_Scholarships = ScholarshipPackage.get_Scholarship_List();
 
-                    String faculty = setUp.input_Faculty();
+                    String faculty = setUp.input_Faculty(list_Students);
                     setUp.input_Excellent_Quota(list_Scholarships);
                     setUp.input_Good_Quota(list_Scholarships);
                     setUp.input_fairlyGood_Quota(list_Scholarships);

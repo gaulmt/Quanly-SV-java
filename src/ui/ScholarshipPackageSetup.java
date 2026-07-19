@@ -1,9 +1,9 @@
 package ui;
 
 import model.ScholarshipPackage;
+import model.Student;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ScholarshipPackageSetup {
 
@@ -13,19 +13,34 @@ public class ScholarshipPackageSetup {
         return sc.nextLine().trim();
     }
 
-    public String input_Faculty() {
+    public String input_Faculty(List<Student> students) {
+        List<String> faculty_List = new ArrayList<>();
+        for (Student s : students) {
+            String faculty = s.getFaculty_Name();
+            if (faculty != null && !faculty_List.contains(faculty)) {
+                faculty_List.add(faculty);
+            }
+        }
+        Collections.sort(faculty_List);
+
+
         while (true) {
-            System.out.print("Nhập tên khoa: ");
-            String temp = "";
-            temp = input();
-            if (temp.trim().isEmpty()) {
-                System.out.println("Tên khoa không được để trống!");
-                continue;
+            System.out.println("========= Danh sách khoa =========");
+            for (int i = 0; i < faculty_List.size(); i++) {
+                System.out.println((i + 1) + ". " + faculty_List.get(i));
             }
-            if (temp.matches("[\\p{L} ]+")) {
-                return temp;
+            System.out.print("Chọn khoa (nhập số thứ tự): ");
+
+            String temp = input();
+            try {
+                int choice = Integer.parseInt(temp);
+                if (choice >= 1 && choice <= faculty_List.size()) {
+                    return faculty_List.get(choice - 1);
+                }
+                System.out.println("Số thứ tự không hợp lệ, vui lòng chọn lại!");
+            } catch (NumberFormatException e) {
+                System.out.println("Vui lòng nhập một con số!");
             }
-            System.out.println("Tên khoa phải là chuỗi chữ, không chứa số hoặc ký tự đặc biệt!");
         }
     }
 
