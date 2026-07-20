@@ -33,7 +33,7 @@ public class UI {
                     //coming soon
                 case 2:
                     System.out.println("============Danh sách sinh viên hiện tại===========");
-                    Show_All(repo.get_All_Students());
+                    showAll(repo.get_All_Students());
                     break;
                 case 3:
                     List<Student> list_Students = repo.get_All_Students();
@@ -52,7 +52,7 @@ public class UI {
                     }
 
                     sc.nextLine();
-                    Clear_Screen_Screen();
+                    clearScreen();
                     break;
                 case 4:
                     if (repo.get_All_Students().isEmpty()){
@@ -75,7 +75,7 @@ public class UI {
 
 
 
-    private void Show_All(List<Student> s){
+    private void showAll(List<Student> s){
         if(s == null ||s.isEmpty()){
             System.out.println("Danh sách rỗng.....");
             return;
@@ -96,7 +96,7 @@ public class UI {
 
     }
     
-    private void Clear_Screen_Screen(){
+    private void clearScreen(){
         System.out.println("Nhân enter để tiếp tục...........");
         String info =sc.nextLine();
         if (info.isEmpty()){
