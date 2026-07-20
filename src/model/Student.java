@@ -3,17 +3,17 @@ package model;
 public class Student {
     private String id;
     private String name;
-    private String faculty_Name;
+    private String class_Room;
     private String gender;
     private Double gpa;
     private Integer traning_Point;
     private Integer credits;
     private String scholarship_Name;
 
-    public Student(String id, String name, String faculty, String gender, Double gpa, Integer traning_Point, Integer credits) {
+    public Student(String id, String name, String classRoom, String gender, Double gpa, Integer traning_Point, Integer credits) {
         this.id = id;
         this.name = name;
-        this.faculty_Name = faculty;
+        this.class_Room = classRoom;
         this.gender = gender;
         this.gpa = gpa;
         this.traning_Point = traning_Point;
@@ -32,8 +32,8 @@ public class Student {
         return name;
     }
 
-    public String getFaculty_Name() {
-        return faculty_Name;
+    public String getClass_Room() {
+        return class_Room;
     }
 
     public String getGender() {
@@ -64,8 +64,8 @@ public class Student {
         this.name = name;
     }
 
-    public void setFaculty_Name(String faculty_Name) {
-        this.faculty_Name = faculty_Name;
+    public void setClass_Room(String class_Room) {
+        this.class_Room = class_Room;
     }
 
     public void setGender(String gender) {

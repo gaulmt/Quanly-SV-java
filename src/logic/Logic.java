@@ -2,7 +2,6 @@ package logic;
 
 import model.ScholarshipPackage;
 import model.Student;
-import ui.ScholarshipPackageSetup;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,7 +11,7 @@ import java.util.stream.Collectors;
 public class Logic {
 
     //xét xem sv có đủ dk nhận học bổng hay không
-    public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String faculty) {
+    public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String classRoom) {
         if (Students == null || list == null || Students.isEmpty()) {
             return new ArrayList<>();
         }
@@ -20,11 +19,11 @@ public class Logic {
         ScholarshipPackage good_Scholarship         = list.get(1);
         ScholarshipPackage fairlyGood_Scholarship   = list.get(2);
 
-        List<Student> student_Faculty = Students.stream()
-                .filter(student -> student.getFaculty_Name().equalsIgnoreCase(faculty))
+        List<Student> student_classRoom = Students.stream()
+                .filter(student -> student.getClass_Room().equalsIgnoreCase(classRoom))
                 .collect(Collectors.toList());
 
-        student_Faculty.sort(
+        student_classRoom.sort(
                 Comparator.comparing(Student::getGpa, Comparator.reverseOrder())
                 .thenComparing(Student::getTraning_Point, Comparator.reverseOrder())
                 .thenComparing(Student::getCredits, Comparator.reverseOrder())
@@ -34,7 +33,7 @@ public class Logic {
        int good_slot        = good_Scholarship.getQuota();
        int fairlyGood_slot  = fairlyGood_Scholarship.getQuota();
 
-        for (Student s : student_Faculty) {
+        for (Student s : student_classRoom) {
             double gpa = s.getGpa();
             int traning_Point = s.getTraning_Point();
             int credit = s.getCredits();
@@ -69,7 +68,7 @@ public class Logic {
                 s.setScholarship_Name("chưa có học bổng");
             }
         }
-        return student_Faculty;
+        return student_classRoom;
     }
 
 

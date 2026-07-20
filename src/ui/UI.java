@@ -29,41 +29,40 @@ public class UI {
             choice = sc.nextInt();
             switch (choice) {
                 case 1:
-
-                    //coming soon
                     break;
+                    //coming soon
                 case 2:
                     System.out.println("============Danh sách sinh viên hiện tại===========");
-                    List<Student> students = repo.get_All_Students();
-                    for (Student s : students){
-                        System.out.println( s.getId() + " "
-                                            + s.getName() + " "
-                                            + s.getGpa() + " "
-                                            + s.getCredits());
-                    }
+                    Show_All(repo.get_All_Students());
                     break;
                 case 3:
                     List<Student> list_Students = repo.get_All_Students();
                     List<ScholarshipPackage> list_Scholarships = ScholarshipPackage.get_Scholarship_List();
 
-                    String faculty = setUp.input_Faculty(list_Students);
+                    String classRoom = setUp.inputClassRoom(list_Students);
                     setUp.input_Excellent_Quota(list_Scholarships);
                     setUp.input_Good_Quota(list_Scholarships);
                     setUp.input_fairlyGood_Quota(list_Scholarships);
 
-                    List<Student> studentFaculty = logic.Considering_Scholarships(list_Students, list_Scholarships, faculty);
+                    List<Student> studentclassRoom = logic.Considering_Scholarships(list_Students, list_Scholarships, classRoom);
                     System.out.println("============Danh sách sinh viên sau khi xét học bổng===========");
 
-                    for (Student student : studentFaculty) {
-                        System.out.println("#" + student.getId() + " - " + student.getName() + " - Học bổng: " + student.getScholarship_Name());
+                    for (Student student : studentclassRoom) {
+                        System.out.println(student.getId() + " - " + student.getName() + " - Học bổng: " + student.getScholarship_Name());
                     }
 
                     sc.nextLine();
-                    clear();
+                    Clear_Screen_Screen();
                     break;
                 case 4:
+                    if (repo.get_All_Students().isEmpty()){
+                        System.out.println("Danh sách rỗng....");
+                        break;
+                    }
+                    logic.student_Sort_By_Id(repo.get_All_Students());
+                    System.out.println("Danh sách đã được sắp xếp từ trên xuống theo mã số sinh viên!");
                     break;
-                case 0:
+                case 0: 
                     System.out.println("tạm biệt bro!");
                     break;
                 default:
@@ -75,7 +74,29 @@ public class UI {
     }
 
 
-    private void clear(){
+
+    private void Show_All(List<Student> s){
+        if(s == null ||s.isEmpty()){
+            System.out.println("Danh sách rỗng.....");
+            return;
+        }
+
+
+        for (Student student : s){
+            System.out.println(
+
+                    student.getId()                 + " - " +
+                    student.getName()               + " - " +
+                    student.getClass_Room()         + " - " +
+                    student.getGender()             + " - " +
+                    student.getGpa()                + " - " +
+                    student.getTraning_Point()      + " - " +
+                    student.getCredits());
+        }
+
+    }
+    
+    private void Clear_Screen_Screen(){
         System.out.println("Nhân enter để tiếp tục...........");
         String info =sc.nextLine();
         if (info.isEmpty()){

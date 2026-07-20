@@ -13,30 +13,30 @@ public class ScholarshipPackageSetup {
         return sc.nextLine().trim();
     }
 
-    public String input_Faculty(List<Student> students) {
-        List<String> faculty_List = new ArrayList<>();
+    public String inputClassRoom(List<Student> students) {
+        List<String> classRoom = new ArrayList<>();
         for (Student s : students) {
-            String faculty = s.getFaculty_Name().toUpperCase();
-            if (!faculty_List.contains(faculty)) {
-                faculty_List.add(faculty);
+            String class_Room = s.getClass_Room().toUpperCase();
+            if (!classRoom.contains(class_Room)) {
+                classRoom.add(class_Room);
             }
         }
 
-        faculty_List.sort(String::compareTo);
+        classRoom.sort(String::compareTo);
 
 
         while (true) {
-            System.out.println("========= Danh sách khoa =========");
-            for (int i = 0; i < faculty_List.size(); i++) {
-                System.out.println((i + 1) + ". " + faculty_List.get(i));
+            System.out.println("========= Danh sách lớp =========");
+            for (int i = 0; i < classRoom.size(); i++) {
+                System.out.println((i + 1) + ". " + classRoom.get(i));
             }
             System.out.print("Chọn khoa (nhập số thứ tự): ");
 
             String temp = input();
             try {
                 int choice = Integer.parseInt(temp);
-                if (choice >= 1 && choice <= faculty_List.size()) {
-                    return faculty_List.get(choice - 1);
+                if (choice >= 1 && choice <= classRoom.size()) {
+                    return classRoom.get(choice - 1);
                 }
                 System.out.println("Số thứ tự không hợp lệ, vui lòng chọn lại!");
             } catch (NumberFormatException e) {
