@@ -1,7 +1,6 @@
 package ui;
 
 import logic.Logic;
-import model.ScholarshipPackage;
 import model.Student;
 import repository.StudentRepository;
 
@@ -97,10 +96,22 @@ public class StudentFrame extends JFrame {
 
     private void xetHocBong() {
         List<Student> danhSach = repo.get_All_Students();
-        List<ScholarshipPackage> danhSachHocBong = ScholarshipPackage.get_Scholarship_List();
-        logic.Considering_Scholarships(danhSach, danhSachHocBong);
+        if (danhSach.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
+                    "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        ScholarshipDialog dlg = new ScholarshipDialog(this, danhSach);
+        dlg.setVisible(true);
+        if (!dlg.isDaXacNhan()) return;
+
+        List<Student> ketQua = logic.Considering_Scholarships(
+                danhSach, dlg.getDanhSachHocBong(), dlg.getLopDaChon());
         capNhatBang();
-        JOptionPane.showMessageDialog(this, "Đã xét học bổng xong!");
+        JOptionPane.showMessageDialog(this,
+                "Đã xét học bổng xong cho lớp " + dlg.getLopDaChon() +
+                        "! (" + ketQua.size() + " sinh viên trong lớp)");
     }
 
     private void sapXep() {
