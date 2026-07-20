@@ -72,4 +72,34 @@ public class UI {
             new StudentFrame(repo, logic).setVisible(true);
         });
     }
+    private void ShowAll(List<Student> s){
+        if(s == null ||s.isEmpty()){
+            System.out.println("Danh sách rỗng.....");
+            return;
+        }
+
+
+        for (Student student : s){
+            System.out.println(
+
+                    student.getId()                 + " - " +
+                            student.getName()               + " - " +
+                            student.getClass_Room()         + " - " +
+                            student.getGender()             + " - " +
+                            student.getGpa()                + " - " +
+                            student.getTraning_Point()      + " - " +
+                            student.getCredits());
+        }
+
+    }
+
+    private void clearScreen(){
+        System.out.println("Nhân enter để tiếp tục...........");
+        String info =sc.nextLine();
+        if (info.isEmpty()){
+            for (int i = 0; i < 50; i++) {
+                System.out.println();
+            }
+        }
+    }
 }
