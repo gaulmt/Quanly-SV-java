@@ -51,6 +51,7 @@ public class UI {
                         System.out.println(student.getId() + " - " + student.getName() + " - Học bổng: " + student.getScholarship_Name());
                     }
 
+
                     sc.nextLine();
                     clearScreen();
                     break;

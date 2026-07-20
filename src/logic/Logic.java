@@ -15,6 +15,7 @@ public class Logic {
         if (Students == null || list == null || Students.isEmpty()) {
             return new ArrayList<>();
         }
+
         ScholarshipPackage excellent_Scholarship    = list.get(0);
         ScholarshipPackage good_Scholarship         = list.get(1);
         ScholarshipPackage fairlyGood_Scholarship   = list.get(2);

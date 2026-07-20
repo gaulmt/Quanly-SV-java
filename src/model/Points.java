@@ -30,6 +30,7 @@ public class Points {
         this.finallabGrade = finallabGrade;
     }
 
+
     // getter
     public String getStudentId() {
         return studentId;

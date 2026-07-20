@@ -22,6 +22,7 @@ public class ScholarshipPackage {
         this.min_Traning_Point = min_Traning_Point;
         this.quota = quota;
     }
+
     //getter
 
     public String getName() {

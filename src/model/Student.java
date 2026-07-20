@@ -20,6 +20,7 @@ public class Student {
         this.credits = credits;
     }
 
+
     public String getScholarship_Name() {
         return scholarship_Name;
     }
