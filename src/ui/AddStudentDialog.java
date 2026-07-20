@@ -5,9 +5,6 @@ import model.Student;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Form nhập thông tin 1 sinh viên mới.
- */
 public class AddStudentDialog extends JDialog {
 
     private JTextField txtId, txtName, txtClass, txtGpa, txtTraningPoint, txtCredits;

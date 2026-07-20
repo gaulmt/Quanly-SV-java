@@ -62,10 +62,6 @@ import repository.StudentRepository;
 
 import javax.swing.*;
 
-/**
- * Điểm khởi chạy giao diện. Giữ nguyên chữ ký run(repo, logic) như bản console cũ
- * để Main.java không cần thay đổi gì.
- */
 public class UI {
     public void run(StudentRepository repo, Logic logic) {
         SwingUtilities.invokeLater(() -> {

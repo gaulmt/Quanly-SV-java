@@ -10,12 +10,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
- * Thêm sinh viên / Xét học bổng / Sắp xếp theo MSSV.
- * Toàn bộ dữ liệu và xử lý nghiệp vụ vẫn nằm ở StudentRepository và Logic,
- * UI chỉ gọi lại các hàm có sẵn.
- */
+
+// Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
+// Thêm sinh viên / Xét học bổng / Sắp xếp theo MSSV.
+// Toàn bộ dữ liệu và xử lý nghiệp vụ vẫn nằm ở StudentRepository và Logic,
+// UI chỉ gọi lại các hàm có sẵn.
+
 public class StudentFrame extends JFrame {
 
     private final StudentRepository repo;
