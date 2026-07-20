@@ -10,16 +10,16 @@ public class Student {
     private Integer credits;
     private String scholarship_Name;
 
-    public Student(String id, String name, String class_Room, String gender, Double gpa, Integer traning_Point, Integer credits) {
+    public Student(String id, String name, String classRoom, String gender, Double gpa, Integer traning_Point, Integer credits) {
         this.id = id;
         this.name = name;
-        this.class_Room = class_Room;
+        this.class_Room = classRoom;
         this.gender = gender;
         this.gpa = gpa;
         this.traning_Point = traning_Point;
         this.credits = credits;
-        this.scholarship_Name = scholarship_Name;
     }
+
 
     public String getScholarship_Name() {
         return scholarship_Name;
@@ -84,4 +84,6 @@ public class Student {
     public void setScholarship_Name(String scholarship_Name) {
         this.scholarship_Name = scholarship_Name;
     }
+
+
 }
