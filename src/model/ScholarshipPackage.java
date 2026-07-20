@@ -22,6 +22,7 @@ public class ScholarshipPackage {
         this.min_Traning_Point = min_Traning_Point;
         this.quota = quota;
     }
+
     //getter
 
     public String getName() {
@@ -68,12 +69,12 @@ public class ScholarshipPackage {
 
 
     public  static List<ScholarshipPackage>
-            get_Scholarship_List(){
+    get_Scholarship_List(){
         List<ScholarshipPackage> list = new ArrayList<>();
 
-        list.add(new ScholarshipPackage("xuất sắc",36000000.0,3.6,90,18));
-        list.add(new ScholarshipPackage("giỏi",18000000.0,3.2,80,36));
-        list.add(new ScholarshipPackage("khá",6700000.0,2.5,75,67));
+        list.add(new ScholarshipPackage("xuất sắc",36000000.0,3.6,90,0));
+        list.add(new ScholarshipPackage("giỏi",18000000.0,3.2,80,0));
+        list.add(new ScholarshipPackage("khá",6700000.0,2.5,75,0));
         return list;
     }
 }
