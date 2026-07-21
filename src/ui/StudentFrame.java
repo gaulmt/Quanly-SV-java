@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.util.Objects;
 
 
 // Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
