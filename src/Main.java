@@ -1,4 +1,4 @@
-import repository.StudentRepository;
+import model.StudentRepository;
 import model.Student;
 import logic.ApprovalScholarShipLogic;
 import ui.UI;

@@ -58,19 +58,19 @@
 package ui;
 
 import logic.ApprovalScholarShipLogic;
-import repository.StudentRepository;
+import model.StudentRepository;
 
 import javax.swing.*;
 
 public class UI {
 
-    public void run(StudentRepository repo, ApprovalScholarShipLogic approvalScholarShipLogic) {
+    public void run(StudentRepository repo, ApprovalScholarShipLogic logic) {
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             } catch (Exception ignored) {
             }
-            new StudentFrame(repo, approvalScholarShipLogic).setVisible(true);
+            new StudentFrame(repo, logic).setVisible(true);
         });
     }
 }

@@ -2,6 +2,7 @@ package logic;
 
 import model.ScholarshipPackage;
 import model.Student;
+import model.StudentRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -71,5 +72,34 @@ public class ApprovalScholarShipLogic {
     // sắp xếp theo mssv
     public void studentSortById(List<Student> students) {
         students.sort(Comparator.comparing(Student::getId));
+    }
+
+    // Xóa sinh viên theo ID
+    public int deleteStudentById(StudentRepository repo, String id) {
+
+        List<Student> students = repo.getAllStudents();
+
+        for (int i = 0; i < students.size(); i++) {
+            Student s = students.get(i);
+
+            if (s.getId().equals(id)) {
+                students.remove(i);
+                return 1;  // tìm thấy
+            }
+        }
+        return 0; // không tìm thấy
+    }
+
+    // tìm sv theo ID
+    public Student findStudentById(StudentRepository repo, String id) {
+        List<Student> students = repo.getAllStudents();
+
+        for (int i = 0; i < students.size(); i++) {
+            Student s = students.get(i);
+            if (s.getId().equals(id)) {
+                return s; // tìm thấy -> trả về sinh viên
+            }
+        }
+        return null;
     }
 }
