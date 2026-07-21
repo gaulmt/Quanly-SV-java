@@ -1,6 +1,6 @@
 package ui;
 
-import logic.Logic;
+import logic.ApprovalScholarShipLogic;
 import model.Student;
 import model.StudentRepository;
 
@@ -11,19 +11,17 @@ import java.util.List;
 
 // Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
 // Thêm sinh viên / Xét học bổng / Sắp xếp theo MSSV.
-// Toàn bộ dữ liệu và xử lý nghiệp vụ vẫn nằm ở StudentRepository và Logic,
-// UI chỉ gọi lại các hàm có sẵn.
 
 public class StudentFrame extends JFrame {
 
     private final StudentRepository repo;
-    private final Logic logic;
+    private final ApprovalScholarShipLogic logic;
 
     private final String[] cot = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
     private DefaultTableModel model;
     private JTable table;
 
-    public StudentFrame(StudentRepository repo, Logic logic) {
+    public StudentFrame(StudentRepository repo, ApprovalScholarShipLogic logic) {
         super("Quản lý sinh viên");
         this.repo = repo;
         this.logic = logic;
@@ -81,14 +79,14 @@ public class StudentFrame extends JFrame {
     private void themSinhVien() {
         AddStudentDialog dlg = new AddStudentDialog(this);
         dlg.setVisible(true);
-        if (dlg.isDaXacNhan()) {
-            if (logic.findStudentById(repo, dlg.getKetQua().getId()) != null) {
+        if (dlg.isChecked()) {
+            if (logic.findStudentById(repo, dlg.getResult().getId()) != null) {
                 JOptionPane.showMessageDialog(this,
                         "MSSV này đã tồn tại trong danh sách!",
                         "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            repo.addStudent(dlg.getKetQua());
+            repo.addStudent(dlg.getResult());
             capNhatBang();
         }
     }
@@ -103,13 +101,13 @@ public class StudentFrame extends JFrame {
 
         ScholarshipDialog dlg = new ScholarshipDialog(this, danhSach);
         dlg.setVisible(true);
-        if (!dlg.isDaXacNhan()) return;
+        if (!dlg.isChecked()) return;
 
         List<Student> ketQua = logic.consideringScholarships(
-                danhSach, dlg.getDanhSachHocBong(), dlg.getLopDaChon());
+                danhSach, dlg.getScholarShipList(), dlg.getStudentClass());
         capNhatBang();
         JOptionPane.showMessageDialog(this,
-                "Đã xét học bổng xong cho lớp " + dlg.getLopDaChon() +
+                "Đã xét học bổng xong cho lớp " + dlg.getStudentClass() +
                         "! (" + ketQua.size() + " sinh viên trong lớp)");
     }
 

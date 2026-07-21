@@ -4,12 +4,11 @@ import model.ScholarshipPackage;
 import model.Student;
 import model.StudentRepository;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Logic {
+public class ApprovalScholarShipLogic {
 
     // xét xem sv có đủ điều kiện nhận học bổng hay không
     public List<Student> consideringScholarships(List<Student> students, List<ScholarshipPackage> list, String classRoom) {

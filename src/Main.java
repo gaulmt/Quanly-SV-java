@@ -1,6 +1,6 @@
 import model.StudentRepository;
 import model.Student;
-import logic.Logic;
+import logic.ApprovalScholarShipLogic;
 import ui.UI;
 
 public class Main {
@@ -15,8 +15,8 @@ public class Main {
         repo.addStudent(new Student("SV006", "Vũ Hoàng F", "ATTT", "Nam", 2.40, 90, 20));
         repo.addStudent(new Student("SV007", "Đỗ Anh G", "CNTT1", "Nam", 3.70, 92, 21));
 
-        Logic logic = new Logic();
+        ApprovalScholarShipLogic approvalScholarShipLogic = new ApprovalScholarShipLogic();
         UI menu = new UI();
-        menu.run(repo, logic);
+        menu.run(repo, approvalScholarShipLogic);
     }
 }

@@ -57,14 +57,14 @@
 
 package ui;
 
-import logic.Logic;
+import logic.ApprovalScholarShipLogic;
 import model.StudentRepository;
 
 import javax.swing.*;
 
 public class UI {
 
-    public void run(StudentRepository repo, Logic logic) {
+    public void run(StudentRepository repo, ApprovalScholarShipLogic logic) {
         SwingUtilities.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

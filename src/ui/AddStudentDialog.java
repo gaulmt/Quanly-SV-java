@@ -7,11 +7,16 @@ import java.awt.*;
 
 public class AddStudentDialog extends JDialog {
 
-    private JTextField txtId, txtName, txtClass, txtGpa, txtTraningPoint, txtCredits;
-    private JComboBox<String> cbGender;
+    private JTextField txtId;
+    private JTextField txtName;
+    private JTextField txtClass;
+    private JTextField txtGpa;
+    private JTextField txtTraningPoint;
+    private JTextField txtCredits;
+    private JComboBox<String> genderPack;
 
-    private boolean daXacNhan = false;
-    private Student ketQua;
+    private boolean checked = false;
+    private Student result;
 
     public AddStudentDialog(Frame owner) {
         super(owner, "Thêm sinh viên mới", true);
@@ -30,7 +35,7 @@ public class AddStudentDialog extends JDialog {
         txtId = new JTextField(16);
         txtName = new JTextField(16);
         txtClass = new JTextField(16);
-        cbGender = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
+        genderPack = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
         txtGpa = new JTextField(16);
         txtTraningPoint = new JTextField(16);
         txtCredits = new JTextField(16);
@@ -39,24 +44,24 @@ public class AddStudentDialog extends JDialog {
         addRow(form, c, row++, "MSSV:", txtId);
         addRow(form, c, row++, "Họ và tên:", txtName);
         addRow(form, c, row++, "Lớp:", txtClass);
-        addRow(form, c, row++, "Giới tính:", cbGender);
+        addRow(form, c, row++, "Giới tính:", genderPack);
         addRow(form, c, row++, "GPA (0 - 4):", txtGpa);
         addRow(form, c, row++, "Điểm rèn luyện (0 - 100):", txtTraningPoint);
         addRow(form, c, row++, "Số tín chỉ tích lũy:", txtCredits);
 
-        JButton btnLuu = new JButton("Lưu");
-        JButton btnHuy = new JButton("Hủy");
-        btnLuu.addActionListener(e -> onLuu());
-        btnHuy.addActionListener(e -> dispose());
+        JButton btnSave = new JButton("Lưu");
+        JButton btnCancel = new JButton("Hủy");
+        btnSave.addActionListener(e -> onSave());
+        btnCancel.addActionListener(e -> dispose());
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttons.add(btnLuu);
-        buttons.add(btnHuy);
+        buttons.add(btnSave);
+        buttons.add(btnCancel);
 
         setLayout(new BorderLayout());
         add(form, BorderLayout.CENTER);
         add(buttons, BorderLayout.SOUTH);
-        getRootPane().setDefaultButton(btnLuu);
+        getRootPane().setDefaultButton(btnSave);
     }
 
     private void addRow(JPanel form, GridBagConstraints c, int row, String label, JComponent field) {
@@ -66,11 +71,11 @@ public class AddStudentDialog extends JDialog {
         form.add(field, c);
     }
 
-    private void onLuu() {
+    private void onSave() {
         String id = txtId.getText().trim();
         String name = txtName.getText().trim();
         String classRoom = txtClass.getText().trim();
-        String gender = (String) cbGender.getSelectedItem();
+        String gender = (String) genderPack.getSelectedItem();
 
         if (id.isEmpty() || name.isEmpty() || classRoom.isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -85,36 +90,36 @@ public class AddStudentDialog extends JDialog {
             int credits = Integer.parseInt(txtCredits.getText().trim());
 
             if (gpa < 0 || gpa > 4) {
-                canhBao("GPA phải nằm trong khoảng 0 đến 4!");
+                warning("GPA phải nằm trong khoảng 0 đến 4!");
                 return;
             }
             if (traningPoint < 0 || traningPoint > 100) {
-                canhBao("Điểm rèn luyện phải nằm trong khoảng 0 đến 100!");
+                warning("Điểm rèn luyện phải nằm trong khoảng 0 đến 100!");
                 return;
             }
             if (credits < 0) {
-                canhBao("Số tín chỉ không được âm!");
+                warning("Số tín chỉ không được âm!");
                 return;
             }
 
-            ketQua = new Student(id, name, classRoom, gender, gpa, traningPoint, credits);
-            daXacNhan = true;
+            result = new Student(id, name, classRoom, gender, gpa, traningPoint, credits);
+            checked = true;
             dispose();
 
         } catch (NumberFormatException ex) {
-            canhBao("GPA, Điểm rèn luyện và Số tín chỉ phải là số hợp lệ!");
+            warning("GPA, Điểm rèn luyện và Số tín chỉ phải là số hợp lệ!");
         }
     }
 
-    private void canhBao(String msg) {
-        JOptionPane.showMessageDialog(this, msg, "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
+    private void warning(String message) {
+        JOptionPane.showMessageDialog(this, message, "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
     }
 
-    public boolean isDaXacNhan() {
-        return daXacNhan;
+    public boolean isChecked() {
+        return checked;
     }
 
-    public Student getKetQua() {
-        return ketQua;
+    public Student getResult() {
+        return result;
     }
 }
