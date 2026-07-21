@@ -12,9 +12,6 @@ public class Logic {
 
     // xét xem sv có đủ điều kiện nhận học bổng hay không
     public List<Student> consideringScholarships(List<Student> students, List<ScholarshipPackage> list, String classRoom) {
-        if (students == null || list == null || students.isEmpty()) {
-            return new ArrayList<>();
-        }
 
         ScholarshipPackage excellentScholarship = list.get(0);
         ScholarshipPackage goodScholarship = list.get(1);
