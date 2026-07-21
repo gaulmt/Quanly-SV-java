@@ -1,6 +1,4 @@
-package repository;
-
-import model.Student;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +10,10 @@ public class StudentRepository {
         listStudent.add(s);
     }
 
-    public Student getStudentById(String id) {
-        for (Student s : listStudent) {
-            if (s.getId().equals(id)) {
-                return s;
-            }
-        }
-        return null;
-    }
+
 
     public List<Student> getAllStudents() {
         return listStudent;
     }
+
 }

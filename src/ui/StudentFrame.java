@@ -2,7 +2,7 @@ package ui;
 
 import logic.Logic;
 import model.Student;
-import repository.StudentRepository;
+import model.StudentRepository;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -82,7 +82,7 @@ public class StudentFrame extends JFrame {
         AddStudentDialog dlg = new AddStudentDialog(this);
         dlg.setVisible(true);
         if (dlg.isDaXacNhan()) {
-            if (repo.getStudentById(dlg.getKetQua().getId()) != null) {
+            if (logic.findStudentById(repo, dlg.getKetQua().getId()) != null) {
                 JOptionPane.showMessageDialog(this,
                         "MSSV này đã tồn tại trong danh sách!",
                         "Trùng MSSV", JOptionPane.WARNING_MESSAGE);

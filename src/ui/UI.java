@@ -58,7 +58,7 @@
 package ui;
 
 import logic.Logic;
-import repository.StudentRepository;
+import model.StudentRepository;
 
 import javax.swing.*;
 
