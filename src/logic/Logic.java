@@ -10,69 +10,67 @@ import java.util.stream.Collectors;
 
 public class Logic {
 
-    //xét xem sv có đủ dk nhận học bổng hay không
-    public List<Student> Considering_Scholarships(List<Student> Students, List<ScholarshipPackage> list,String classRoom) {
+    // xét xem sv có đủ điều kiện nhận học bổng hay không
+    public List<Student> consideringScholarships(List<Student> students, List<ScholarshipPackage> list, String classRoom) {
 
-        ScholarshipPackage excellent_Scholarship    = list.get(0);
-        ScholarshipPackage good_Scholarship         = list.get(1);
-        ScholarshipPackage fairlyGood_Scholarship   = list.get(2);
+        ScholarshipPackage excellentScholarship = list.get(0);
+        ScholarshipPackage goodScholarship = list.get(1);
+        ScholarshipPackage fairlyGoodScholarship = list.get(2);
 
-        List<Student> student_classRoom = Students.stream()
-                .filter(student -> student.getClass_Room().equalsIgnoreCase(classRoom))
+        List<Student> studentClassRoom = students.stream()
+                .filter(student -> student.getClassRoom().equalsIgnoreCase(classRoom))
                 .collect(Collectors.toList());
 
-        student_classRoom.sort(
+        studentClassRoom.sort(
                 Comparator.comparing(Student::getGpa, Comparator.reverseOrder())
-                        .thenComparing(Student::getTraning_Point, Comparator.reverseOrder())
+                        .thenComparing(Student::getTrainingPoint, Comparator.reverseOrder())
                         .thenComparing(Student::getCredits, Comparator.reverseOrder())
         );
 
-        int excellent_slot   = excellent_Scholarship.getQuota();
-        int good_slot        = good_Scholarship.getQuota();
-        int fairlyGood_slot  = fairlyGood_Scholarship.getQuota();
+        int excellentSlot = excellentScholarship.getQuota();
+        int goodSlot = goodScholarship.getQuota();
+        int fairlyGoodSlot = fairlyGoodScholarship.getQuota();
 
-        for (Student s : student_classRoom) {
+        for (Student s : studentClassRoom) {
             double gpa = s.getGpa();
-            int traning_Point = s.getTraning_Point();
+            int trainingPoint = s.getTrainingPoint();
             int credit = s.getCredits();
 
             if (
-                    gpa >= excellent_Scholarship.getMin_Gpa()
-                            && traning_Point >= excellent_Scholarship.getMin_Traning_Point()
-                            && excellent_slot != 0
+                    gpa >= excellentScholarship.getMinGpa()
+                            && trainingPoint >= excellentScholarship.getMinTrainingPoint()
+                            && excellentSlot != 0
                             && credit >= 15) {
 
-                excellent_slot--;
-                s.setScholarship_Name(excellent_Scholarship.getName());
+                excellentSlot--;
+                s.setScholarshipName(excellentScholarship.getName());
 
             } else if (
-                    gpa >= good_Scholarship.getMin_Gpa()
-                            && traning_Point >= good_Scholarship.getMin_Traning_Point()
-                            && good_slot != 0
+                    gpa >= goodScholarship.getMinGpa()
+                            && trainingPoint >= goodScholarship.getMinTrainingPoint()
+                            && goodSlot != 0
                             && credit >= 15) {
-                good_slot--;
-                s.setScholarship_Name(good_Scholarship.getName());
+                goodSlot--;
+                s.setScholarshipName(goodScholarship.getName());
 
             } else if (
-                    gpa >= fairlyGood_Scholarship.getMin_Gpa()
-                            && traning_Point >= fairlyGood_Scholarship.getMin_Traning_Point()
-                            && fairlyGood_slot != 0
+                    gpa >= fairlyGoodScholarship.getMinGpa()
+                            && trainingPoint >= fairlyGoodScholarship.getMinTrainingPoint()
+                            && fairlyGoodSlot != 0
                             && credit >= 15) {
 
-                fairlyGood_slot--;
-                s.setScholarship_Name(fairlyGood_Scholarship.getName());
+                fairlyGoodSlot--;
+                s.setScholarshipName(fairlyGoodScholarship.getName());
 
             } else {
-                s.setScholarship_Name("chưa có học bổng");
+                s.setScholarshipName("chưa có học bổng");
             }
         }
-        return student_classRoom;
+        return studentClassRoom;
     }
 
-
-    //sắp xếp theo mssv
-    public void student_Sort_By_Id(List<Student> Students){
-        Students.sort(Comparator.comparing(Student::getId));
+    // sắp xếp theo mssv
+    public void studentSortById(List<Student> students) {
+        students.sort(Comparator.comparing(Student::getId));
     }
-
 }
