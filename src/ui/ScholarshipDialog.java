@@ -12,32 +12,34 @@ import java.util.List;
 
 public class ScholarshipDialog extends JDialog {
 
-    private JComboBox<String> cbLop;
-    private JTextField txtXuatSac, txtGioi, txtKha;
+    private JComboBox<String> classPack;
+    private JTextField txtExcellent;
+    private JTextField txtGood;
+    private JTextField txtFairlyGood;
 
-    private boolean daXacNhan = false;
-    private String lopDaChon;
-    private List<ScholarshipPackage> danhSachHocBong;
+    private boolean checked = false;
+    private String studentClass;
+    private List<ScholarshipPackage> scholarShipList;
 
-    public ScholarshipDialog(Frame owner, List<Student> danhSachSV) {
+    public ScholarshipDialog(Frame owner, List<Student> studentList) {
         super(owner, "Xét học bổng theo lớp", true);
-        initUI(danhSachSV);
+        initUI(studentList);
         pack();
         setLocationRelativeTo(owner);
     }
 
-    private void initUI(List<Student> danhSachSV) {
+    private void initUI(List<Student> studentList) {
         // Lấy danh sách lớp không trùng lặp từ danh sách sinh viên hiện có
-        List<String> danhSachLop = new ArrayList<>();
-        for (Student s : danhSachSV) {
+        List<String> studentClassList = new ArrayList<>();
+        for (Student s : studentList) {
             String lop = s.getClassRoom().toUpperCase();
-            if (!danhSachLop.contains(lop)) {
-                danhSachLop.add(lop);
+            if (!studentClassList.contains(lop)) {
+                studentClassList.add(lop);
             }
         }
-        danhSachLop.sort(String::compareTo);
+        studentClassList.sort(String::compareTo);
 
-        List<ScholarshipPackage> macDinh = ScholarshipPackage.getScholarshipList();
+        List<ScholarshipPackage> Default = ScholarshipPackage.getScholarshipList();
 
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -45,20 +47,20 @@ public class ScholarshipDialog extends JDialog {
         c.insets = new Insets(6, 6, 6, 6);
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        cbLop = new JComboBox<>(danhSachLop.toArray(new String[0]));
-        txtXuatSac = new JTextField(String.valueOf(macDinh.get(0).getQuota()), 8);
-        txtGioi = new JTextField(String.valueOf(macDinh.get(1).getQuota()), 8);
-        txtKha = new JTextField(String.valueOf(macDinh.get(2).getQuota()), 8);
+        classPack = new JComboBox<>(studentClassList.toArray(new String[0]));
+        txtExcellent = new JTextField(String.valueOf(Default.get(0).getQuota()), 8);
+        txtGood = new JTextField(String.valueOf(Default.get(1).getQuota()), 8);
+        txtFairlyGood = new JTextField(String.valueOf(Default.get(2).getQuota()), 8);
 
         int row = 0;
-        addRow(form, c, row++, "Chọn lớp:", cbLop);
-        addRow(form, c, row++, "Số suất học bổng xuất sắc:", txtXuatSac);
-        addRow(form, c, row++, "Số suất học bổng giỏi:", txtGioi);
-        addRow(form, c, row++, "Số suất học bổng khá:", txtKha);
+        addRow(form, c, row++, "Chọn lớp:", classPack);
+        addRow(form, c, row++, "Số suất học bổng xuất sắc:", txtExcellent);
+        addRow(form, c, row++, "Số suất học bổng giỏi:", txtGood);
+        addRow(form, c, row++, "Số suất học bổng khá:", txtFairlyGood);
 
         JButton btnXet = new JButton("Xét học bổng");
         JButton btnHuy = new JButton("Hủy");
-        btnXet.addActionListener(e -> onXet(macDinh));
+        btnXet.addActionListener(e -> onCheck(Default));
         btnHuy.addActionListener(e -> dispose());
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -78,30 +80,30 @@ public class ScholarshipDialog extends JDialog {
         form.add(field, c);
     }
 
-    private void onXet(List<ScholarshipPackage> macDinh) {
-        if (cbLop.getSelectedItem() == null) {
+    private void onCheck(List<ScholarshipPackage> Default) {
+        if (classPack.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, "Chưa có lớp nào trong danh sách sinh viên!",
                     "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
             return;
         }
         try {
-            int quotaXuatSac = Integer.parseInt(txtXuatSac.getText().trim());
-            int quotaGioi = Integer.parseInt(txtGioi.getText().trim());
-            int quotaKha = Integer.parseInt(txtKha.getText().trim());
+            int quotaExcellent = Integer.parseInt(txtExcellent.getText().trim());
+            int quotaGood = Integer.parseInt(txtGood.getText().trim());
+            int quotaFairlyGood = Integer.parseInt(txtFairlyGood.getText().trim());
 
-            if (quotaXuatSac < 0 || quotaGioi < 0 || quotaKha < 0) {
+            if (quotaExcellent < 0 || quotaGood < 0 || quotaFairlyGood < 0) {
                 JOptionPane.showMessageDialog(this, "Số suất học bổng không được là số âm!",
                         "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            macDinh.get(0).setQuota(quotaXuatSac);
-            macDinh.get(1).setQuota(quotaGioi);
-            macDinh.get(2).setQuota(quotaKha);
+            Default.get(0).setQuota(quotaExcellent);
+            Default.get(1).setQuota(quotaGood);
+            Default.get(2).setQuota(quotaFairlyGood);
 
-            danhSachHocBong = macDinh;
-            lopDaChon = (String) cbLop.getSelectedItem();
-            daXacNhan = true;
+            scholarShipList = Default;
+            studentClass = (String) classPack.getSelectedItem();
+            checked = true;
             dispose();
 
         } catch (NumberFormatException ex) {
@@ -110,15 +112,15 @@ public class ScholarshipDialog extends JDialog {
         }
     }
 
-    public boolean isDaXacNhan() {
-        return daXacNhan;
+    public boolean isChecked() {
+        return checked;
     }
 
-    public String getLopDaChon() {
-        return lopDaChon;
+    public String getStudentClass() {
+        return studentClass;
     }
 
-    public List<ScholarshipPackage> getDanhSachHocBong() {
-        return danhSachHocBong;
+    public List<ScholarshipPackage> getScholarShipList() {
+        return scholarShipList;
     }
 }

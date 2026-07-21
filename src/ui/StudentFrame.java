@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
 
 // Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
 // Thêm sinh viên / Xét học bổng / Sắp xếp theo MSSV.
@@ -29,7 +28,7 @@ public class StudentFrame extends JFrame {
         this.repo = repo;
         this.logic = logic;
         initUI();
-        capNhatBang();
+        updateTable();
     }
 
     private void initUI() {
@@ -39,10 +38,10 @@ public class StudentFrame extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
 
-        JPanel noiDung = new JPanel(new BorderLayout(8, 8));
-        noiDung.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JPanel content = new JPanel(new BorderLayout(8, 8));
+        content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        noiDung.add(taoToolbar(), BorderLayout.NORTH);
+        content.add(toolBarMaker(), BorderLayout.NORTH);
 
         model = new DefaultTableModel(cot, 0) {
             @Override
@@ -54,72 +53,73 @@ public class StudentFrame extends JFrame {
         table.setRowHeight(26);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
-        noiDung.add(new JScrollPane(table), BorderLayout.CENTER);
+        content.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        add(noiDung, BorderLayout.CENTER);
+        add(content, BorderLayout.CENTER);
     }
 
-    private JPanel taoToolbar() {
+    private JPanel toolBarMaker() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
 
-        JButton btnThem = new JButton("Thêm sinh viên");
-        JButton btnXetHocBong = new JButton("Xét học bổng");
-        JButton btnSapXep = new JButton("Sắp xếp theo MSSV");
-        JButton btnLamMoi = new JButton("Làm mới");
+        JButton btnAdd = new JButton("Thêm sinh viên");
+        JButton btnScholarShipGiver = new JButton("Xét học bổng");
+        JButton btnSortByID = new JButton("Sắp xếp theo MSSV");
+        JButton btnRefresh = new JButton("Làm mới");
 
-        btnThem.addActionListener(e -> themSinhVien());
-        btnXetHocBong.addActionListener(e -> xetHocBong());
-        btnSapXep.addActionListener(e -> sapXep());
-        btnLamMoi.addActionListener(e -> capNhatBang());
+        btnAdd.addActionListener(e -> addNewStudent());
+        btnScholarShipGiver.addActionListener(e -> scholarShipGiver());
+        btnSortByID.addActionListener(e -> sortByID());
+        btnRefresh.addActionListener(e -> updateTable());
 
-        panel.add(btnThem);
-        panel.add(btnXetHocBong);
-        panel.add(btnSapXep);
-        panel.add(btnLamMoi);
+        panel.add(btnAdd);
+        panel.add(btnScholarShipGiver);
+        panel.add(btnSortByID);
+        panel.add(btnRefresh);
         return panel;
     }
 
-    private void themSinhVien() {
+    private void addNewStudent() {
         AddStudentDialog dlg = new AddStudentDialog(this);
         dlg.setVisible(true);
-        if (dlg.isDaXacNhan()) {
-            if (repo.getStudentById(dlg.getKetQua().getId()) != null) {
+        if (dlg.isChecked()) {
+            if (repo.getStudentById(dlg.getResult().getId()) != null) {
                 JOptionPane.showMessageDialog(this,
                         "MSSV này đã tồn tại trong danh sách!",
                         "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            repo.addStudent(dlg.getKetQua());
-            capNhatBang();
+            repo.addStudent(dlg.getResult());
+            updateTable();
         }
+
     }
 
-    private void xetHocBong() {
-        List<Student> danhSach = repo.getAllStudents();
-        if (danhSach.isEmpty()) {
+    private void scholarShipGiver() {
+        List<Student> List = repo.getAllStudents();
+        if (List.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
                     "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        ScholarshipDialog dlg = new ScholarshipDialog(this, danhSach);
+        ScholarshipDialog dlg = new ScholarshipDialog(this, List);
         dlg.setVisible(true);
-        if (!dlg.isDaXacNhan()) return;
+        if (!dlg.isChecked()) return;
 
-        List<Student> ketQua = logic.consideringScholarships(
-                danhSach, dlg.getDanhSachHocBong(), dlg.getLopDaChon());
-        capNhatBang();
+        List<Student> result = logic.consideringScholarships(
+                List, dlg.getScholarShipList(), dlg.getStudentClass());
+        updateTable();
         JOptionPane.showMessageDialog(this,
-                "Đã xét học bổng xong cho lớp " + dlg.getLopDaChon() +
-                        "! (" + ketQua.size() + " sinh viên trong lớp)");
+                "Đã xét học bổng xong cho lớp " + dlg.getStudentClass() +
+                        "! (" + result.size() + " sinh viên trong lớp)");
     }
 
-    private void sapXep() {
+    private void sortByID() {
         logic.studentSortById(repo.getAllStudents());
-        capNhatBang();
+        updateTable();
     }
 
-    private void capNhatBang() {
+    private void updateTable() {
         model.setRowCount(0);
         for (Student sv : repo.getAllStudents()) {
             model.addRow(new Object[]{
