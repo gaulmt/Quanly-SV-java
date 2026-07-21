@@ -130,7 +130,7 @@ public class StudentFrame extends JFrame {
                     sv.getGpa(),
                     sv.getTrainingPoint(),
                     sv.getCredits(),
-                    sv.getScholarshipName() == null ? "" : sv.getScholarshipName()
+                    sv.getScholarshipName() == null ? "Không có" : sv.getScholarshipName()
             });
         }
     }
