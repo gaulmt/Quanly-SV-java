@@ -1,6 +1,6 @@
 package ui;
 
-import logic.Logic;
+import logic.ApprovalScholarShipLogic;
 import model.Student;
 import repository.StudentRepository;
 
@@ -17,16 +17,16 @@ import java.util.List;
 public class StudentFrame extends JFrame {
 
     private final StudentRepository repo;
-    private final Logic logic;
+    private final ApprovalScholarShipLogic approvalScholarShipLogic;
 
     private final String[] cot = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
     private DefaultTableModel model;
     private JTable table;
 
-    public StudentFrame(StudentRepository repo, Logic logic) {
+    public StudentFrame(StudentRepository repo, ApprovalScholarShipLogic approvalScholarShipLogic) {
         super("Quản lý sinh viên");
         this.repo = repo;
-        this.logic = logic;
+        this.approvalScholarShipLogic = approvalScholarShipLogic;
         initUI();
         updateTable();
     }
@@ -106,7 +106,7 @@ public class StudentFrame extends JFrame {
         dlg.setVisible(true);
         if (!dlg.isChecked()) return;
 
-        List<Student> result = logic.consideringScholarships(
+        List<Student> result = approvalScholarShipLogic.consideringScholarships(
                 List, dlg.getScholarShipList(), dlg.getStudentClass());
         updateTable();
         JOptionPane.showMessageDialog(this,
@@ -115,7 +115,7 @@ public class StudentFrame extends JFrame {
     }
 
     private void sortByID() {
-        logic.studentSortById(repo.getAllStudents());
+        approvalScholarShipLogic.studentSortById(repo.getAllStudents());
         updateTable();
     }
 
