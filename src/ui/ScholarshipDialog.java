@@ -32,9 +32,9 @@ public class ScholarshipDialog extends JDialog {
         // Lấy danh sách lớp không trùng lặp từ danh sách sinh viên hiện có
         List<String> studentClassList = new ArrayList<>();
         for (Student s : studentList) {
-            String lop = s.getClassRoom().toUpperCase();
-            if (!studentClassList.contains(lop)) {
-                studentClassList.add(lop);
+            String studentClass = s.getClassRoom().toUpperCase();
+            if (!studentClassList.contains(studentClass)) {
+                studentClassList.add(studentClass);
             }
         }
         studentClassList.sort(String::compareTo);
@@ -58,19 +58,19 @@ public class ScholarshipDialog extends JDialog {
         addRow(form, c, row++, "Số suất học bổng giỏi:", txtGood);
         addRow(form, c, row++, "Số suất học bổng khá:", txtFairlyGood);
 
-        JButton btnXet = new JButton("Xét học bổng");
-        JButton btnHuy = new JButton("Hủy");
-        btnXet.addActionListener(e -> onCheck(Default));
-        btnHuy.addActionListener(e -> dispose());
+        JButton btnScholarShipGiver = new JButton("Xét học bổng");
+        JButton btnCancel = new JButton("Hủy");
+        btnScholarShipGiver.addActionListener(e -> onCheck(Default));
+        btnCancel.addActionListener(e -> dispose());
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttons.add(btnXet);
-        buttons.add(btnHuy);
+        buttons.add(btnScholarShipGiver);
+        buttons.add(btnCancel);
 
         setLayout(new BorderLayout());
         add(form, BorderLayout.CENTER);
         add(buttons, BorderLayout.SOUTH);
-        getRootPane().setDefaultButton(btnXet);
+        getRootPane().setDefaultButton(btnScholarShipGiver);
     }
 
     private void addRow(JPanel form, GridBagConstraints c, int row, String label, JComponent field) {

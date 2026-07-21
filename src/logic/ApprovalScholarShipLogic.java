@@ -63,7 +63,7 @@ public class ApprovalScholarShipLogic {
                 s.setScholarshipName(fairlyGoodScholarship.getName());
 
             } else {
-                s.setScholarshipName("chưa có học bổng");
+                s.setScholarshipName("Không có");
             }
         }
         return studentClassRoom;
