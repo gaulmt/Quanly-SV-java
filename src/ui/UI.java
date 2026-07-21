@@ -33,7 +33,7 @@ public class UI {
                     break;
                 case 2:
                     System.out.println("============Danh sách sinh viên hiện tại===========");
-                    ShowAll(repo.get_All_Students());
+                    showAll(repo.get_All_Students());
                     break;
                 case 3:
                     List<Student> list_Students = repo.get_All_Students();
@@ -69,7 +69,7 @@ public class UI {
         }
         while (choice != 0);
     }
-    private void ShowAll(List<Student> s){
+    private void showAll(List<Student> s){
         if(s == null ||s.isEmpty()){
             System.out.println("Danh sách rỗng.....");
             return;
