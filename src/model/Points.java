@@ -4,7 +4,7 @@ public class Points {
     private String studentId;
     private String subjectName;
     private Double gpa;
-    private Integer traningPoint;
+    private Integer trainingPoint;
     private Double regularGrade1;
     private Double regularGrade2;
     private Double regularLabGrade1;
@@ -12,13 +12,12 @@ public class Points {
     private Double midtermGrade;
     private Double midtermLabGrade;
     private Double finalGrade;
-    private Double finallabGrade;
+    private Double finalLabGrade;
 
-
-    public Points(String studentId, String subjectName, Integer traningPoint, Double gpa, Double regularGrade1, Double regularGrade2, Double regularLabGrade1, Double regularLabGrade2, Double midtermGrade, Double midtermLabGrade, Double finalGrade, Double finallabGrade) {
+    public Points(String studentId, String subjectName, Integer trainingPoint, Double gpa, Double regularGrade1, Double regularGrade2, Double regularLabGrade1, Double regularLabGrade2, Double midtermGrade, Double midtermLabGrade, Double finalGrade, Double finalLabGrade) {
         this.studentId = studentId;
         this.subjectName = subjectName;
-        this.traningPoint = traningPoint;
+        this.trainingPoint = trainingPoint;
         this.gpa = gpa;
         this.regularGrade1 = regularGrade1;
         this.regularGrade2 = regularGrade2;
@@ -27,7 +26,7 @@ public class Points {
         this.midtermGrade = midtermGrade;
         this.midtermLabGrade = midtermLabGrade;
         this.finalGrade = finalGrade;
-        this.finallabGrade = finallabGrade;
+        this.finalLabGrade = finalLabGrade;
     }
 
     // getter
@@ -43,8 +42,8 @@ public class Points {
         return gpa;
     }
 
-    public Integer getTraningPoint() {
-        return traningPoint;
+    public Integer getTrainingPoint() {
+        return trainingPoint;
     }
 
     public Double getRegularGrade1() {
@@ -75,12 +74,11 @@ public class Points {
         return midtermLabGrade;
     }
 
-    public Double getFinallabGrade() {
-        return finallabGrade;
+    public Double getFinalLabGrade() {
+        return finalLabGrade;
     }
 
-
-    //setter
+    // setter
     public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
@@ -93,8 +91,8 @@ public class Points {
         this.gpa = gpa;
     }
 
-    public void setTraningPoint(Integer traningPoint) {
-        this.traningPoint = traningPoint;
+    public void setTrainingPoint(Integer trainingPoint) {
+        this.trainingPoint = trainingPoint;
     }
 
     public void setRegularGrade1(Double regularGrade1) {
@@ -125,7 +123,7 @@ public class Points {
         this.finalGrade = finalGrade;
     }
 
-    public void setFinallabGrade(Double finallabGrade) {
-        this.finallabGrade = finallabGrade;
+    public void setFinalLabGrade(Double finalLabGrade) {
+        this.finalLabGrade = finalLabGrade;
     }
 }

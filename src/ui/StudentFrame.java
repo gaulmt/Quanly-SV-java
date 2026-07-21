@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-
 // Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
 // Thêm sinh viên / Xét học bổng / Sắp xếp theo MSSV.
 // Toàn bộ dữ liệu và xử lý nghiệp vụ vẫn nằm ở StudentRepository và Logic,
@@ -83,19 +82,19 @@ public class StudentFrame extends JFrame {
         AddStudentDialog dlg = new AddStudentDialog(this);
         dlg.setVisible(true);
         if (dlg.isDaXacNhan()) {
-            if (repo.get_Student_By_Id(dlg.getKetQua().getId()) != null) {
+            if (repo.getStudentById(dlg.getKetQua().getId()) != null) {
                 JOptionPane.showMessageDialog(this,
                         "MSSV này đã tồn tại trong danh sách!",
                         "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            repo.add_Student(dlg.getKetQua());
+            repo.addStudent(dlg.getKetQua());
             capNhatBang();
         }
     }
 
     private void xetHocBong() {
-        List<Student> danhSach = repo.get_All_Students();
+        List<Student> danhSach = repo.getAllStudents();
         if (danhSach.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
                     "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
@@ -106,7 +105,7 @@ public class StudentFrame extends JFrame {
         dlg.setVisible(true);
         if (!dlg.isDaXacNhan()) return;
 
-        List<Student> ketQua = logic.Considering_Scholarships(
+        List<Student> ketQua = logic.consideringScholarships(
                 danhSach, dlg.getDanhSachHocBong(), dlg.getLopDaChon());
         capNhatBang();
         JOptionPane.showMessageDialog(this,
@@ -115,22 +114,22 @@ public class StudentFrame extends JFrame {
     }
 
     private void sapXep() {
-        logic.student_Sort_By_Id(repo.get_All_Students());
+        logic.studentSortById(repo.getAllStudents());
         capNhatBang();
     }
 
     private void capNhatBang() {
         model.setRowCount(0);
-        for (Student sv : repo.get_All_Students()) {
+        for (Student sv : repo.getAllStudents()) {
             model.addRow(new Object[]{
                     sv.getId(),
                     sv.getName(),
-                    sv.getClass_Room(),
+                    sv.getClassRoom(),
                     sv.getGender(),
                     sv.getGpa(),
-                    sv.getTraning_Point(),
+                    sv.getTrainingPoint(),
                     sv.getCredits(),
-                    sv.getScholarship_Name() == null ? "" : sv.getScholarship_Name()
+                    sv.getScholarshipName() == null ? "" : sv.getScholarshipName()
             });
         }
     }

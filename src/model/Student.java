@@ -3,26 +3,25 @@ package model;
 public class Student {
     private String id;
     private String name;
-    private String class_Room;
+    private String classRoom;
     private String gender;
     private Double gpa;
-    private Integer traning_Point;
+    private Integer trainingPoint;
     private Integer credits;
-    private String scholarship_Name;
+    private String scholarshipName;
 
-    public Student(String id, String name, String classRoom, String gender, Double gpa, Integer traning_Point, Integer credits) {
+    public Student(String id, String name, String classRoom, String gender, Double gpa, Integer trainingPoint, Integer credits) {
         this.id = id;
         this.name = name;
-        this.class_Room = classRoom;
+        this.classRoom = classRoom;
         this.gender = gender;
         this.gpa = gpa;
-        this.traning_Point = traning_Point;
+        this.trainingPoint = trainingPoint;
         this.credits = credits;
     }
 
-
-    public String getScholarship_Name() {
-        return scholarship_Name;
+    public String getScholarshipName() {
+        return scholarshipName;
     }
 
     public String getId() {
@@ -33,8 +32,8 @@ public class Student {
         return name;
     }
 
-    public String getClass_Room() {
-        return class_Room;
+    public String getClassRoom() {
+        return classRoom;
     }
 
     public String getGender() {
@@ -45,8 +44,8 @@ public class Student {
         return gpa;
     }
 
-    public Integer getTraning_Point() {
-        return traning_Point;
+    public Integer getTrainingPoint() {
+        return trainingPoint;
     }
 
     public Integer getCredits() {
@@ -57,16 +56,16 @@ public class Student {
         this.id = id;
     }
 
-    public void setTraning_Point(Integer traning_Point) {
-        this.traning_Point = traning_Point;
+    public void setTrainingPoint(Integer trainingPoint) {
+        this.trainingPoint = trainingPoint;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setClass_Room(String class_Room) {
-        this.class_Room = class_Room;
+    public void setClassRoom(String classRoom) {
+        this.classRoom = classRoom;
     }
 
     public void setGender(String gender) {
@@ -81,9 +80,7 @@ public class Student {
         this.credits = credits;
     }
 
-    public void setScholarship_Name(String scholarship_Name) {
-        this.scholarship_Name = scholarship_Name;
+    public void setScholarshipName(String scholarshipName) {
+        this.scholarshipName = scholarshipName;
     }
-
-
 }

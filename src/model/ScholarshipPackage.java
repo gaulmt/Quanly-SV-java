@@ -1,30 +1,28 @@
 package model;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScholarshipPackage {
     private String name;
     private Double value;
-    private Double min_Gpa;
-    private Integer min_Traning_Point;
+    private Double minGpa;
+    private Integer minTrainingPoint;
     private Integer quota;
-
 
     //constructor
     public ScholarshipPackage() {
     }
-    public ScholarshipPackage(String name, Double value, Double min_Gpa, Integer min_Traning_Point, Integer quota) {
+
+    public ScholarshipPackage(String name, Double value, Double minGpa, Integer minTrainingPoint, Integer quota) {
         this.name = name;
         this.value = value;
-        this.min_Gpa = min_Gpa;
-        this.min_Traning_Point = min_Traning_Point;
+        this.minGpa = minGpa;
+        this.minTrainingPoint = minTrainingPoint;
         this.quota = quota;
     }
 
     //getter
-
     public String getName() {
         return name;
     }
@@ -33,12 +31,12 @@ public class ScholarshipPackage {
         return value;
     }
 
-    public Integer getMin_Traning_Point() {
-        return min_Traning_Point;
+    public Integer getMinTrainingPoint() {
+        return minTrainingPoint;
     }
 
-    public Double getMin_Gpa() {
-        return min_Gpa;
+    public Double getMinGpa() {
+        return minGpa;
     }
 
     public Integer getQuota() {
@@ -46,9 +44,8 @@ public class ScholarshipPackage {
     }
 
     //setter
-
-    public void setMin_Gpa(Double min_Gpa) {
-        this.min_Gpa = min_Gpa;
+    public void setMinGpa(Double minGpa) {
+        this.minGpa = minGpa;
     }
 
     public void setValue(Double value) {
@@ -59,22 +56,20 @@ public class ScholarshipPackage {
         this.name = name;
     }
 
-    public void setMin_Traning_Point(Integer min_Traning_Point) {
-        this.min_Traning_Point = min_Traning_Point;
+    public void setMinTrainingPoint(Integer minTrainingPoint) {
+        this.minTrainingPoint = minTrainingPoint;
     }
 
     public void setQuota(Integer quota) {
         this.quota = quota;
     }
 
-
-    public  static List<ScholarshipPackage>
-    get_Scholarship_List(){
+    public static List<ScholarshipPackage> getScholarshipList() {
         List<ScholarshipPackage> list = new ArrayList<>();
 
-        list.add(new ScholarshipPackage("xuất sắc",36000000.0,3.6,90,0));
-        list.add(new ScholarshipPackage("giỏi",18000000.0,3.2,80,0));
-        list.add(new ScholarshipPackage("khá",6700000.0,2.5,75,0));
+        list.add(new ScholarshipPackage("xuất sắc", 36000000.0, 3.6, 90, 0));
+        list.add(new ScholarshipPackage("giỏi", 18000000.0, 3.2, 80, 0));
+        list.add(new ScholarshipPackage("khá", 6700000.0, 2.5, 75, 0));
         return list;
     }
 }

@@ -30,14 +30,14 @@ public class ScholarshipDialog extends JDialog {
         // Lấy danh sách lớp không trùng lặp từ danh sách sinh viên hiện có
         List<String> danhSachLop = new ArrayList<>();
         for (Student s : danhSachSV) {
-            String lop = s.getClass_Room().toUpperCase();
+            String lop = s.getClassRoom().toUpperCase();
             if (!danhSachLop.contains(lop)) {
                 danhSachLop.add(lop);
             }
         }
         danhSachLop.sort(String::compareTo);
 
-        List<ScholarshipPackage> macDinh = ScholarshipPackage.get_Scholarship_List();
+        List<ScholarshipPackage> macDinh = ScholarshipPackage.getScholarshipList();
 
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
