@@ -1,5 +1,6 @@
 package ui;
 
+import model.SaveData;
 import model.Student;
 
 import javax.swing.*;
@@ -111,8 +112,13 @@ public class AddStudentDialog extends JDialog {
         }
     }
 
+
     private void warning(String message) {
         JOptionPane.showMessageDialog(this, message, "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
+    }
+
+    public String getTxt(){
+        return txtName.getText().trim();
     }
 
     public boolean isChecked() {

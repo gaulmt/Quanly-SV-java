@@ -1,6 +1,7 @@
 package ui;
 
 import logic.ApprovalScholarShipLogic;
+import model.SaveData;
 import model.Student;
 import model.StudentRepository;
 
@@ -62,16 +63,19 @@ public class StudentFrame extends JFrame {
         JButton btnAddStudent = new JButton("Thêm sinh viên");
         JButton btnScholarShipGiver = new JButton("Xét học bổng");
         JButton btnSortStudentByID = new JButton("Sắp xếp theo MSSV");
+        JButton btnSaveStudentList = new JButton("Lưu danh sách sinh viên");
         JButton btnRefresh = new JButton("Làm mới");
 
         btnAddStudent.addActionListener(e -> addNewStudent());
         btnScholarShipGiver.addActionListener(e -> scholarShipGiver());
         btnSortStudentByID.addActionListener(e -> sortStudentByID());
+        btnSaveStudentList.addActionListener(e -> saveFileStudent());
         btnRefresh.addActionListener(e -> updateTable());
 
         panel.add(btnAddStudent);
         panel.add(btnScholarShipGiver);
         panel.add(btnSortStudentByID);
+        panel.add(btnSaveStudentList);
         panel.add(btnRefresh);
         return panel;
     }
@@ -115,6 +119,24 @@ public class StudentFrame extends JFrame {
         logic.studentSortById(repo.getAllStudents());
         updateTable();
     }
+
+    private void saveFileStudent() {
+        List<Student> students = repo.getAllStudents();
+        if (students.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
+                    "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        SaveFileStudentDialog save = new SaveFileStudentDialog();
+        if (!save.chooseFilePath(this)) {
+            return;
+        }
+        save.saveStudentListByTxt(students);
+        JOptionPane.showMessageDialog(this,
+                "Đã lưu danh sách về " + save.getFilePath());
+    }
+
 
     private void updateTable() {
         model.setRowCount(0);
