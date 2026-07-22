@@ -19,11 +19,6 @@ public class SaveFileStudentDialog extends JDialog {
         this.saveData = new SaveData();
     }
 
-    public SaveFileStudentDialog(String filePath) {
-        this.saveData = new SaveData();
-        this.saveData.setFilePath(filePath);
-    }
-
     public String getFilePath() {
         return saveData.getFilePath();
     }
