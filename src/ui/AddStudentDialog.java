@@ -1,6 +1,5 @@
 package ui;
 
-import model.SaveData;
 import model.Student;
 
 import javax.swing.*;
@@ -12,7 +11,7 @@ public class AddStudentDialog extends JDialog {
     private JTextField txtName;
     private JTextField txtClass;
     private JTextField txtGpa;
-    private JTextField txtTraningPoint;
+    private JTextField txtTrainingPoint;
     private JTextField txtCredits;
     private JComboBox<String> genderPack;
 
@@ -38,7 +37,7 @@ public class AddStudentDialog extends JDialog {
         txtClass = new JTextField(16);
         genderPack = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
         txtGpa = new JTextField(16);
-        txtTraningPoint = new JTextField(16);
+        txtTrainingPoint = new JTextField(16);
         txtCredits = new JTextField(16);
 
         int row = 0;
@@ -47,7 +46,7 @@ public class AddStudentDialog extends JDialog {
         addRow(form, c, row++, "Lớp:", txtClass);
         addRow(form, c, row++, "Giới tính:", genderPack);
         addRow(form, c, row++, "GPA (0 - 4):", txtGpa);
-        addRow(form, c, row++, "Điểm rèn luyện (0 - 100):", txtTraningPoint);
+        addRow(form, c, row++, "Điểm rèn luyện (0 - 100):", txtTrainingPoint);
         addRow(form, c, row++, "Số tín chỉ tích lũy:", txtCredits);
 
         JButton btnSave = new JButton("Lưu");
@@ -87,7 +86,7 @@ public class AddStudentDialog extends JDialog {
 
         try {
             double gpa = Double.parseDouble(txtGpa.getText().trim());
-            int traningPoint = Integer.parseInt(txtTraningPoint.getText().trim());
+            int traningPoint = Integer.parseInt(txtTrainingPoint.getText().trim());
             int credits = Integer.parseInt(txtCredits.getText().trim());
 
             if (gpa < 0 || gpa > 4) {
@@ -117,9 +116,6 @@ public class AddStudentDialog extends JDialog {
         JOptionPane.showMessageDialog(this, message, "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
     }
 
-    public String getTxt(){
-        return txtName.getText().trim();
-    }
 
     public boolean isChecked() {
         return checked;
