@@ -15,4 +15,14 @@ public class StudentRepository {
         return listStudent;
     }
 
+    public List<Student> updateStudent(String oldId, Student student) {
+        for (int i = 0; i < listStudent.size(); i++) {
+            if (listStudent.get(i).getId().equals(oldId)) {
+                listStudent.set(i, student);
+                break;
+            }
+        }
+        return listStudent;
+    }
+
 }

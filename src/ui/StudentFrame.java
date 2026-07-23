@@ -16,6 +16,7 @@ public class StudentFrame extends JFrame {
 
     private final StudentRepository repo;
     private final ApprovalScholarShipLogic logic;
+    private JTable table;
 
     private final String[] row = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
     private DefaultTableModel model;
@@ -37,7 +38,8 @@ public class StudentFrame extends JFrame {
         JPanel content = new JPanel(new BorderLayout(8, 8));
 
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        content.add(toolBarMaker(), BorderLayout.NORTH);
+        content.add(panelHeader(), BorderLayout.NORTH);
+        content.add(panelFooter(), BorderLayout.SOUTH);
 
         model = new DefaultTableModel(row, 0) {
             @Override
@@ -46,9 +48,9 @@ public class StudentFrame extends JFrame {
             }
         };
 
-        JTable table = new JTable(model);
+        table = new JTable(model);
         Font font = new Font("Segoe UI", Font.PLAIN, 13);
-        table.setRowHeight(26);
+        table.setRowHeight(20);
         table.setFont(font);
         table.getTableHeader().setFont(font);
         content.add(new JScrollPane(table), BorderLayout.CENTER);
@@ -57,7 +59,7 @@ public class StudentFrame extends JFrame {
 
     }
 
-    private JPanel toolBarMaker() {
+    private JPanel panelHeader() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
 
         JButton btnAddStudent = new JButton("Thêm sinh viên");
@@ -80,6 +82,22 @@ public class StudentFrame extends JFrame {
         return panel;
     }
 
+    private JPanel panelFooter() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+
+        JButton btnChangeStudentInfo = new JButton("Sửa thông tin");
+        JButton btnDeleteStudent = new JButton("Xóa sinh viên");
+
+
+        btnChangeStudentInfo.addActionListener(e -> changeStudentInfo());
+        btnDeleteStudent.addActionListener(e -> deleteStudent());
+
+
+        panel.add(btnChangeStudentInfo);
+        panel.add(btnDeleteStudent);
+
+        return panel;
+    }
     private void addNewStudent() {
         Student oldStudentInfo = null;
         while (true){
@@ -145,6 +163,48 @@ public class StudentFrame extends JFrame {
                 "Đã lưu danh sách về " + save.getFilePath());
     }
 
+    private void changeStudentInfo() {
+        int selectedRow = table.getSelectedRow();
+        while (true) {
+
+            if (selectedRow < 0) {
+                return;
+            }
+
+            String id = String.valueOf(model.getValueAt(selectedRow, 0));
+            Student oldStudentInfo = logic.findStudentById(repo, id);
+
+            if (oldStudentInfo == null) {
+                return;
+            }
+
+            ChangeStudentInfo dlg = new ChangeStudentInfo(this, oldStudentInfo);
+            dlg.setVisible(true);
+
+            if (!dlg.isChecked()) {
+                return;
+            }
+
+            Student newStudentInfo = dlg.getResult();
+
+            Student studentDuplicate = logic.findStudentById(repo, newStudentInfo.getId());
+            if (studentDuplicate != null && !studentDuplicate.getId().equals(oldStudentInfo.getId())) {
+                JOptionPane.showMessageDialog(this,
+                        "MSSV mới đã tồn tại trong danh sách!",
+                        "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
+                continue;
+            }
+
+            List<Student> updatedList = repo.updateStudent(oldStudentInfo.getId(), newStudentInfo);
+            updateTable(updatedList);
+            JOptionPane.showMessageDialog(this, "Đã cập nhật thông tin sinh viên!");
+            return;
+        }
+    }
+
+    private void deleteStudent(){
+
+    }
 
     private void updateTable(List<Student> List) {
         model.setRowCount(0);
