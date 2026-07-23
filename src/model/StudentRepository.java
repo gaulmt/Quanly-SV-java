@@ -6,11 +6,10 @@ import java.util.List;
 public class StudentRepository {
     private final List<Student> listStudent = new ArrayList<>();
 
-    public void addStudent(Student s) {
+    public List<Student> addStudent(Student s) {
         listStudent.add(s);
+        return listStudent;
     }
-
-
 
     public List<Student> getAllStudents() {
         return listStudent;

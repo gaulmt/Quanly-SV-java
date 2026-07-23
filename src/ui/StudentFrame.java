@@ -1,7 +1,6 @@
 package ui;
 
 import logic.ApprovalScholarShipLogic;
-import model.SaveData;
 import model.Student;
 import model.StudentRepository;
 
@@ -20,14 +19,13 @@ public class StudentFrame extends JFrame {
 
     private final String[] row = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
     private DefaultTableModel model;
-    private JTable table;
 
     public StudentFrame(StudentRepository repo, ApprovalScholarShipLogic logic) {
         super("Quản lý sinh viên");
         this.repo = repo;
         this.logic = logic;
         initUI();
-        updateTable();
+        updateTable(repo.getAllStudents());
     }
 
     private void initUI() {
@@ -36,10 +34,9 @@ public class StudentFrame extends JFrame {
         setMinimumSize(new Dimension(850, 450));
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
-
         JPanel content = new JPanel(new BorderLayout(8, 8));
-        content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         content.add(toolBarMaker(), BorderLayout.NORTH);
 
         model = new DefaultTableModel(row, 0) {
@@ -48,13 +45,16 @@ public class StudentFrame extends JFrame {
                 return false;
             }
         };
-        table = new JTable(model);
+
+        JTable table = new JTable(model);
+        Font font = new Font("Segoe UI", Font.PLAIN, 13);
         table.setRowHeight(26);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
+        table.setFont(font);
+        table.getTableHeader().setFont(font);
         content.add(new JScrollPane(table), BorderLayout.CENTER);
 
         add(content, BorderLayout.CENTER);
+
     }
 
     private JPanel toolBarMaker() {
@@ -70,7 +70,7 @@ public class StudentFrame extends JFrame {
         btnScholarShipGiver.addActionListener(e -> scholarShipGiver());
         btnSortStudentByID.addActionListener(e -> sortStudentByID());
         btnSaveStudentList.addActionListener(e -> saveFileStudent());
-        btnRefresh.addActionListener(e -> updateTable());
+        btnRefresh.addActionListener(e -> updateTable(repo.getAllStudents()));
 
         panel.add(btnAddStudent);
         panel.add(btnScholarShipGiver);
@@ -81,17 +81,24 @@ public class StudentFrame extends JFrame {
     }
 
     private void addNewStudent() {
-        AddStudentDialog dlg = new AddStudentDialog(this);
-        dlg.setVisible(true);
-        if (dlg.isChecked()) {
-            if (logic.findStudentById(repo, dlg.getResult().getId()) != null) {
-                JOptionPane.showMessageDialog(this,
-                        "MSSV này đã tồn tại trong danh sách!",
-                        "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
-                return;
+        Student oldStudentInfo = null;
+        while (true){
+            AddStudentDialog dlg = new AddStudentDialog(this, oldStudentInfo);
+            dlg.setVisible(true);
+            if (dlg.isChecked()) {
+                Student newInfoStudent = dlg.getResult();
+                if (logic.findStudentById(repo, newInfoStudent.getId()) != null) {
+                    JOptionPane.showMessageDialog(this,
+                            "MSSV này đã tồn tại trong danh sách!",
+                            "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
+                    oldStudentInfo = newInfoStudent;
+                    continue;
+                }
+                List<Student> updatedList = repo.addStudent(newInfoStudent);
+                updateTable(updatedList);
+                break;
             }
-            repo.addStudent(dlg.getResult());
-            updateTable();
+            break;
         }
     }
 
@@ -109,7 +116,7 @@ public class StudentFrame extends JFrame {
 
         List<Student> result = logic.consideringScholarships(
                 List, dlg.getScholarShipList(), dlg.getStudentClass());
-        updateTable();
+        updateTable(result);
         JOptionPane.showMessageDialog(this,
                 "Đã xét học bổng xong cho lớp " + dlg.getStudentClass() +
                         "! (" + result.size() + " sinh viên trong lớp)");
@@ -117,7 +124,8 @@ public class StudentFrame extends JFrame {
 
     private void sortStudentByID() {
         logic.studentSortById(repo.getAllStudents());
-        updateTable();
+        updateTable(repo.getAllStudents());
+        JOptionPane.showMessageDialog(this, "Đã sắp xếp sinh viên theo MSSV!");
     }
 
     private void saveFileStudent() {
@@ -138,9 +146,9 @@ public class StudentFrame extends JFrame {
     }
 
 
-    private void updateTable() {
+    private void updateTable(List<Student> List) {
         model.setRowCount(0);
-        for (Student sv : repo.getAllStudents()) {
+        for (Student sv : List) {
             model.addRow(new Object[]{
                     sv.getId(),
                     sv.getName(),

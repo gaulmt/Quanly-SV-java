@@ -18,9 +18,22 @@ public class AddStudentDialog extends JDialog {
     private boolean checked = false;
     private Student result;
 
-    public AddStudentDialog(Frame owner) {
+
+    public AddStudentDialog(JFrame owner, Student oldStudentInfo) {
+
         super(owner, "Thêm sinh viên mới", true);
         initUI();
+        if (oldStudentInfo != null) {
+            txtId.setText(oldStudentInfo.getId());
+            txtName.setText(oldStudentInfo.getName());
+            txtClass.setText(oldStudentInfo.getClassRoom());
+            genderPack.setSelectedItem(oldStudentInfo.getGender());
+            txtGpa.setText(String.valueOf(oldStudentInfo.getGpa()));
+            txtTrainingPoint.setText(String.valueOf(oldStudentInfo.getTrainingPoint()));
+            txtCredits.setText(String.valueOf(oldStudentInfo.getCredits()));
+            txtId.selectAll();
+            txtId.requestFocusInWindow();
+        }
         pack();
         setLocationRelativeTo(owner);
     }
