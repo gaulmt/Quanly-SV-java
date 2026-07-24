@@ -5,27 +5,25 @@ import model.FilePath;
 import model.Student;
 
 import javax.swing.*;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
-public class SaveFileStudentDialog extends SaveData {
+public class SaveFileStudentDialog extends JDialog {
 
 
-    private final FilePath saveData;
+    private final FilePath filePath;
+    private final SaveData data = new SaveData();
 
     public SaveFileStudentDialog() {
-        this.saveData = new FilePath();
+        this.filePath = new FilePath();
     }
 
     public String getFilePath() {
-        return saveData.getFilePath();
+        return filePath.getFilePath();
     }
 
     public void saveStudentListByCsv(List<Student> studentList) {
-        String path = saveData.getFilePath();
+        String path = filePath.getFilePath();
         if (path == null || path.isEmpty()) {
             System.out.println("Chưa chọn đường dẫn lưu file!");
             return;
@@ -36,7 +34,7 @@ public class SaveFileStudentDialog extends SaveData {
             System.out.println("Đã ghi đè dữ liệu!");
         }
 
-        saveStudentDataByCsv(studentList);
+        data.saveStudentDataByCsv(studentList, path);
     }
 
     public boolean chooseFilePath(JFrame parent) {
@@ -51,7 +49,7 @@ public class SaveFileStudentDialog extends SaveData {
             if (!path.toLowerCase().endsWith(".csv")) {
                 path += ".csv";
             }
-            saveData.setFilePath(path);
+            filePath.setFilePath(path);
             return true;
         }
         return false;

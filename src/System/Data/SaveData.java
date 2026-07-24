@@ -11,13 +11,13 @@ import java.util.List;
 
 public class SaveData {
 
-    String path = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\System\\Data\\SudentData.csv";
+    String path = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\System\\Data\\Students.csv";
 
-    public void saveStudentDataByCsv(List<Student> studentList) {
+    public void saveStudentDataByCsv(List<Student> studentList, String path) {
         File file = new File(path);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write('\uFEFF');
+
             for (Student sv : studentList) {
                 String scholarship = sv.getScholarshipName() == null ? "Không có" : sv.getScholarshipName();
                 writer.write(
@@ -36,5 +36,9 @@ public class SaveData {
         } catch (IOException e) {
             System.out.println("Không thể xuất ra danh sách dưới dạng file!");
         }
+    }
+
+    public void dataSaver(List<Student> List){
+        saveStudentDataByCsv(List, path);
     }
 }
