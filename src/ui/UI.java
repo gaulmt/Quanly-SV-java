@@ -57,7 +57,7 @@
 
 package ui;
 
-import logic.ApprovalScholarShipLogic;
+import System.logic.ApprovalScholarShipLogic;
 import model.StudentRepository;
 
 import javax.swing.*;

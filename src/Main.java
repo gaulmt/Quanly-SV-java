@@ -1,6 +1,6 @@
 import model.StudentRepository;
 import model.Student;
-import logic.ApprovalScholarShipLogic;
+import System.logic.ApprovalScholarShipLogic;
 import ui.UI;
 
 public class Main {

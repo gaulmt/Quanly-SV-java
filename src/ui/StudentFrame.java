@@ -1,6 +1,6 @@
 package ui;
 
-import logic.ApprovalScholarShipLogic;
+import System.logic.ApprovalScholarShipLogic;
 import model.Student;
 import model.StudentRepository;
 
@@ -158,7 +158,7 @@ public class StudentFrame extends JFrame {
         if (!save.chooseFilePath(this)) {
             return;
         }
-        save.saveStudentListByTxt(students);
+        save.saveStudentListByCsv(students);
         JOptionPane.showMessageDialog(this,
                 "Đã lưu danh sách về " + save.getFilePath());
     }

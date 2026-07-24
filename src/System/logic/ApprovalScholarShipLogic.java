@@ -1,4 +1,4 @@
-package logic;
+package System.logic;
 
 import model.ScholarshipPackage;
 import model.Student;

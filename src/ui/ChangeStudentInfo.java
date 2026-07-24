@@ -34,14 +34,6 @@ public class ChangeStudentInfo extends JDialog {
         setLocationRelativeTo(owner);
     }
 
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public Student getResult() {
-        return result;
-    }
-
     private void initUI() {
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -126,6 +118,15 @@ public class ChangeStudentInfo extends JDialog {
             JOptionPane.showMessageDialog(this, "GPA / Điểm rèn luyện / Tín chỉ phải là số hợp lệ!",
                     "Sai định dạng", JOptionPane.WARNING_MESSAGE);
         }
+    }
+
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public Student getResult() {
+        return result;
     }
 }
 

@@ -1,7 +1,7 @@
 package model;
 
 
-public class SaveData {
+public class FilePath {
     private String filePath;
 
     public String getFilePath() {
