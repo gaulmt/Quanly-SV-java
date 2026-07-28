@@ -1,4 +1,4 @@
-package logic;
+package System.logic;
 
 import model.ScholarshipPackage;
 import model.Student;
@@ -63,7 +63,7 @@ public class ApprovalScholarShipLogic {
                 s.setScholarshipName(fairlyGoodScholarship.getName());
 
             } else {
-                s.setScholarshipName("chưa có học bổng");
+                s.setScholarshipName("Không có");
             }
         }
         return studentClassRoom;
@@ -74,28 +74,12 @@ public class ApprovalScholarShipLogic {
         students.sort(Comparator.comparing(Student::getId));
     }
 
-    // Xóa sinh viên theo ID
-    public int deleteStudentById(StudentRepository repo, String id) {
-
-        List<Student> students = repo.getAllStudents();
-
-        for (int i = 0; i < students.size(); i++) {
-            Student s = students.get(i);
-
-            if (s.getId().equals(id)) {
-                students.remove(i);
-                return 1;  // tìm thấy
-            }
-        }
-        return 0; // không tìm thấy
-    }
 
     // tìm sv theo ID
     public Student findStudentById(StudentRepository repo, String id) {
         List<Student> students = repo.getAllStudents();
 
-        for (int i = 0; i < students.size(); i++) {
-            Student s = students.get(i);
+        for (Student s : students) {
             if (s.getId().equals(id)) {
                 return s; // tìm thấy -> trả về sinh viên
             }

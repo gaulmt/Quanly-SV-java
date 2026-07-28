@@ -11,16 +11,29 @@ public class AddStudentDialog extends JDialog {
     private JTextField txtName;
     private JTextField txtClass;
     private JTextField txtGpa;
-    private JTextField txtTraningPoint;
+    private JTextField txtTrainingPoint;
     private JTextField txtCredits;
     private JComboBox<String> genderPack;
 
     private boolean checked = false;
     private Student result;
 
-    public AddStudentDialog(Frame owner) {
+
+    public AddStudentDialog(JFrame owner, Student oldStudentInfo) {
+
         super(owner, "Thêm sinh viên mới", true);
         initUI();
+        if (oldStudentInfo != null) {
+            txtId.setText(oldStudentInfo.getId());
+            txtName.setText(oldStudentInfo.getName());
+            txtClass.setText(oldStudentInfo.getClassRoom());
+            genderPack.setSelectedItem(oldStudentInfo.getGender());
+            txtGpa.setText(String.valueOf(oldStudentInfo.getGpa()));
+            txtTrainingPoint.setText(String.valueOf(oldStudentInfo.getTrainingPoint()));
+            txtCredits.setText(String.valueOf(oldStudentInfo.getCredits()));
+            txtId.selectAll();
+            txtId.requestFocusInWindow();
+        }
         pack();
         setLocationRelativeTo(owner);
     }
@@ -37,7 +50,7 @@ public class AddStudentDialog extends JDialog {
         txtClass = new JTextField(16);
         genderPack = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
         txtGpa = new JTextField(16);
-        txtTraningPoint = new JTextField(16);
+        txtTrainingPoint = new JTextField(16);
         txtCredits = new JTextField(16);
 
         int row = 0;
@@ -46,7 +59,7 @@ public class AddStudentDialog extends JDialog {
         addRow(form, c, row++, "Lớp:", txtClass);
         addRow(form, c, row++, "Giới tính:", genderPack);
         addRow(form, c, row++, "GPA (0 - 4):", txtGpa);
-        addRow(form, c, row++, "Điểm rèn luyện (0 - 100):", txtTraningPoint);
+        addRow(form, c, row++, "Điểm rèn luyện (0 - 100):", txtTrainingPoint);
         addRow(form, c, row++, "Số tín chỉ tích lũy:", txtCredits);
 
         JButton btnSave = new JButton("Lưu");
@@ -86,7 +99,7 @@ public class AddStudentDialog extends JDialog {
 
         try {
             double gpa = Double.parseDouble(txtGpa.getText().trim());
-            int traningPoint = Integer.parseInt(txtTraningPoint.getText().trim());
+            int traningPoint = Integer.parseInt(txtTrainingPoint.getText().trim());
             int credits = Integer.parseInt(txtCredits.getText().trim());
 
             if (gpa < 0 || gpa > 4) {
@@ -111,9 +124,11 @@ public class AddStudentDialog extends JDialog {
         }
     }
 
+
     private void warning(String message) {
         JOptionPane.showMessageDialog(this, message, "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
     }
+
 
     public boolean isChecked() {
         return checked;

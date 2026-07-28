@@ -1,6 +1,6 @@
 package ui;
 
-import logic.ApprovalScholarShipLogic;
+import System.logic.ApprovalScholarShipLogic;
 import model.Student;
 import model.StudentRepository;
 
@@ -16,17 +16,17 @@ public class StudentFrame extends JFrame {
 
     private final StudentRepository repo;
     private final ApprovalScholarShipLogic logic;
-
-    private final String[] cot = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
-    private DefaultTableModel model;
     private JTable table;
+
+    private final String[] row = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
+    private DefaultTableModel model;
 
     public StudentFrame(StudentRepository repo, ApprovalScholarShipLogic logic) {
         super("Quản lý sinh viên");
         this.repo = repo;
         this.logic = logic;
         initUI();
-        capNhatBang();
+        updateTable(repo.getAllStudents());
     }
 
     private void initUI() {
@@ -35,90 +35,180 @@ public class StudentFrame extends JFrame {
         setMinimumSize(new Dimension(850, 450));
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
+        JPanel content = new JPanel(new BorderLayout(8, 8));
 
-        JPanel noiDung = new JPanel(new BorderLayout(8, 8));
-        noiDung.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        content.add(panelHeader(), BorderLayout.NORTH);
+        content.add(panelFooter(), BorderLayout.SOUTH);
 
-        noiDung.add(taoToolbar(), BorderLayout.NORTH);
-
-        model = new DefaultTableModel(cot, 0) {
+        model = new DefaultTableModel(row, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        table = new JTable(model);
-        table.setRowHeight(26);
-        table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 13));
-        noiDung.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        add(noiDung, BorderLayout.CENTER);
+        table = new JTable(model);
+        Font font = new Font("Segoe UI", Font.PLAIN, 13);
+        table.setRowHeight(20);
+        table.setFont(font);
+        table.getTableHeader().setFont(font);
+        content.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        add(content, BorderLayout.CENTER);
+
     }
 
-    private JPanel taoToolbar() {
+    private JPanel panelHeader() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
 
-        JButton btnThem = new JButton("Thêm sinh viên");
-        JButton btnXetHocBong = new JButton("Xét học bổng");
-        JButton btnSapXep = new JButton("Sắp xếp theo MSSV");
-        JButton btnLamMoi = new JButton("Làm mới");
+        JButton btnAddStudent = new JButton("Thêm sinh viên");
+        JButton btnScholarShipGiver = new JButton("Xét học bổng");
+        JButton btnSortStudentByID = new JButton("Sắp xếp theo MSSV");
+        JButton btnSaveStudentList = new JButton("Lưu danh sách sinh viên");
+        JButton btnRefresh = new JButton("Làm mới");
 
-        btnThem.addActionListener(e -> themSinhVien());
-        btnXetHocBong.addActionListener(e -> xetHocBong());
-        btnSapXep.addActionListener(e -> sapXep());
-        btnLamMoi.addActionListener(e -> capNhatBang());
+        btnAddStudent.addActionListener(e -> addNewStudent());
+        btnScholarShipGiver.addActionListener(e -> scholarShipGiver());
+        btnSortStudentByID.addActionListener(e -> sortStudentByID());
+        btnSaveStudentList.addActionListener(e -> saveFileStudent());
+        btnRefresh.addActionListener(e -> updateTable(repo.getAllStudents()));
 
-        panel.add(btnThem);
-        panel.add(btnXetHocBong);
-        panel.add(btnSapXep);
-        panel.add(btnLamMoi);
+        panel.add(btnAddStudent);
+        panel.add(btnScholarShipGiver);
+        panel.add(btnSortStudentByID);
+        panel.add(btnSaveStudentList);
+        panel.add(btnRefresh);
         return panel;
     }
 
-    private void themSinhVien() {
-        AddStudentDialog dlg = new AddStudentDialog(this);
-        dlg.setVisible(true);
-        if (dlg.isChecked()) {
-            if (logic.findStudentById(repo, dlg.getResult().getId()) != null) {
-                JOptionPane.showMessageDialog(this,
-                        "MSSV này đã tồn tại trong danh sách!",
-                        "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
-                return;
+    private JPanel panelFooter() {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 0));
+
+        JButton btnChangeStudentInfo = new JButton("Sửa thông tin");
+        JButton btnDeleteStudent = new JButton("Xóa sinh viên");
+
+
+        btnChangeStudentInfo.addActionListener(e -> changeStudentInfo());
+        btnDeleteStudent.addActionListener(e -> deleteStudent());
+
+
+        panel.add(btnChangeStudentInfo);
+        panel.add(btnDeleteStudent);
+
+        return panel;
+    }
+    private void addNewStudent() {
+        Student oldStudentInfo = null;
+        while (true){
+            AddStudentDialog dlg = new AddStudentDialog(this, oldStudentInfo);
+            dlg.setVisible(true);
+            if (dlg.isChecked()) {
+                Student newInfoStudent = dlg.getResult();
+                if (logic.findStudentById(repo, newInfoStudent.getId()) != null) {
+                    JOptionPane.showMessageDialog(this,
+                            "MSSV này đã tồn tại trong danh sách!",
+                            "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
+                    oldStudentInfo = newInfoStudent;
+                    continue;
+                }
+                List<Student> updatedList = repo.addStudent(newInfoStudent);
+                updateTable(updatedList);
+                break;
             }
-            repo.addStudent(dlg.getResult());
-            capNhatBang();
+            break;
         }
     }
 
-    private void xetHocBong() {
-        List<Student> danhSach = repo.getAllStudents();
-        if (danhSach.isEmpty()) {
+    private void scholarShipGiver() {
+        List<Student> List = repo.getAllStudents();
+        if (List.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
                     "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        ScholarshipDialog dlg = new ScholarshipDialog(this, danhSach);
+        ScholarshipDialog dlg = new ScholarshipDialog(this, List);
         dlg.setVisible(true);
         if (!dlg.isChecked()) return;
 
-        List<Student> ketQua = logic.consideringScholarships(
-                danhSach, dlg.getScholarShipList(), dlg.getStudentClass());
-        capNhatBang();
+        List<Student> result = logic.consideringScholarships(
+                List, dlg.getScholarShipList(), dlg.getStudentClass());
+        updateTable(result);
         JOptionPane.showMessageDialog(this,
                 "Đã xét học bổng xong cho lớp " + dlg.getStudentClass() +
-                        "! (" + ketQua.size() + " sinh viên trong lớp)");
+                        "! (" + result.size() + " sinh viên trong lớp)");
     }
 
-    private void sapXep() {
+    private void sortStudentByID() {
         logic.studentSortById(repo.getAllStudents());
-        capNhatBang();
+        updateTable(repo.getAllStudents());
+        JOptionPane.showMessageDialog(this, "Đã sắp xếp sinh viên theo MSSV!");
     }
 
-    private void capNhatBang() {
+    private void saveFileStudent() {
+        List<Student> students = repo.getAllStudents();
+        if (students.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
+                    "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        SaveFileStudentDialog save = new SaveFileStudentDialog();
+        if (!save.chooseFilePath(this)) {
+            return;
+        }
+        save.saveStudentListByCsv(students);
+        JOptionPane.showMessageDialog(this,
+                "Đã lưu danh sách về " + save.getFilePath());
+    }
+
+    private void changeStudentInfo() {
+        int selectedRow = table.getSelectedRow();
+        while (true) {
+
+            if (selectedRow < 0) {
+                return;
+            }
+
+            String id = String.valueOf(model.getValueAt(selectedRow, 0));
+            Student oldStudentInfo = logic.findStudentById(repo, id);
+
+            if (oldStudentInfo == null) {
+                return;
+            }
+
+            ChangeStudentInfo dlg = new ChangeStudentInfo(this, oldStudentInfo);
+            dlg.setVisible(true);
+
+            if (!dlg.isChecked()) {
+                return;
+            }
+
+            Student newStudentInfo = dlg.getResult();
+
+            Student studentDuplicate = logic.findStudentById(repo, newStudentInfo.getId());
+            if (studentDuplicate != null && !studentDuplicate.getId().equals(oldStudentInfo.getId())) {
+                JOptionPane.showMessageDialog(this,
+                        "MSSV mới đã tồn tại trong danh sách!",
+                        "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
+                continue;
+            }
+
+            List<Student> updatedList = repo.updateStudent(oldStudentInfo.getId(), newStudentInfo);
+            updateTable(updatedList);
+            JOptionPane.showMessageDialog(this, "Đã cập nhật thông tin sinh viên!");
+            return;
+        }
+    }
+
+    private void deleteStudent(){
+
+    }
+
+    private void updateTable(List<Student> List) {
         model.setRowCount(0);
-        for (Student sv : repo.getAllStudents()) {
+        for (Student sv : List) {
             model.addRow(new Object[]{
                     sv.getId(),
                     sv.getName(),
@@ -127,7 +217,7 @@ public class StudentFrame extends JFrame {
                     sv.getGpa(),
                     sv.getTrainingPoint(),
                     sv.getCredits(),
-                    sv.getScholarshipName() == null ? "" : sv.getScholarshipName()
+                    sv.getScholarshipName() == null ? "Không có" : sv.getScholarshipName()
             });
         }
     }

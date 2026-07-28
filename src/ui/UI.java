@@ -57,7 +57,7 @@
 
 package ui;
 
-import logic.ApprovalScholarShipLogic;
+import System.logic.ApprovalScholarShipLogic;
 import model.StudentRepository;
 
 import javax.swing.*;
@@ -67,7 +67,9 @@ public class UI {
     public void run(StudentRepository repo, ApprovalScholarShipLogic logic) {
         SwingUtilities.invokeLater(() -> {
             try {
+
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
             } catch (Exception ignored) {
             }
             new StudentFrame(repo, logic).setVisible(true);
