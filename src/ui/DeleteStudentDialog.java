@@ -23,15 +23,14 @@ public class DeleteStudentDialog extends JDialog {
         messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
         messagePanel.setBorder(BorderFactory.createEmptyBorder(20, 15, 10, 15));
 
-        String studentName = student.getName();
         String message = "Bạn có chắc muốn xóa sinh viên ";
         JLabel labelHeader = new JLabel(message);
         labelHeader.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelHeader.setFont(new Font("Arial", Font.PLAIN, 10));
+        labelHeader.setFont(new Font("Arial", Font.PLAIN, 15));
 
-        JLabel labelFooer = new JLabel(studentName, SwingConstants.CENTER);
+        JLabel labelFooer = new JLabel(student.getName());
         labelFooer.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelFooer.setFont(new Font("Arial", Font.PLAIN, 15));
+        labelFooer.setFont(new Font("Arial", Font.PLAIN, 20));
 
         messagePanel.add(labelHeader, BorderLayout.CENTER);
         messagePanel.add(Box.createVerticalStrut(6));
