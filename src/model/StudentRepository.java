@@ -9,11 +9,11 @@ import java.util.List;
 public class StudentRepository {
     private final List<Student> listStudent = new ArrayList<>();
     private final SaveData saveData = new SaveData();
-    private final LoadData loadData = new LoadData();
-    private final String storagePath = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\System\\Data\\Students.csv";
 
 
     public StudentRepository() {
+        LoadData loadData = new LoadData();
+        String storagePath = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\System\\Data\\Students.csv";
         listStudent.addAll(loadData.load(storagePath));
     }
 
@@ -38,4 +38,14 @@ public class StudentRepository {
         return listStudent;
     }
 
+    public List<Student> deleteAStudent(String Id) {
+        for (int i = 0; i < listStudent.size(); i++) {
+            if (listStudent.get(i).getId().equals(Id)) {
+                listStudent.remove(i);
+                break;
+            }
+        }
+        saveData.dataSaver(listStudent);
+        return listStudent;
+    }
 }
