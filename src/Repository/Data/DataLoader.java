@@ -1,13 +1,13 @@
-package System.Data;
+package Repository.Data;
 
-import model.Student;
+import Repository.Model.Student;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadData {
+public class DataLoader {
 
     public List<Student> load(String path){
 

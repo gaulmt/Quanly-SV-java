@@ -55,16 +55,16 @@
 //     }
 // }
 
-package ui;
+package Ui;
 
-import System.logic.ApprovalScholarShipLogic;
-import model.StudentRepository;
+import Controller.ApprovalScholarshipLogic;
+import Repository.StudentManager;
 
 import javax.swing.*;
 
 public class UI {
 
-    public void run(StudentRepository repo, ApprovalScholarShipLogic logic) {
+    public void run(StudentManager repo, ApprovalScholarshipLogic logic) {
         SwingUtilities.invokeLater(() -> {
             try {
 

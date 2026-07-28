@@ -1,19 +1,20 @@
-package model;
+package Repository;
 
-import System.Data.LoadData;
-import System.Data.SaveData;
+import Repository.Data.DataLoader;
+import Repository.Data.DataSaver;
+import Repository.Model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentRepository {
+public class StudentManager {
     private final List<Student> listStudent = new ArrayList<>();
-    private final SaveData saveData = new SaveData();
+    private final DataSaver saveData = new DataSaver();
 
 
-    public StudentRepository() {
-        LoadData loadData = new LoadData();
-        String storagePath = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\System\\Data\\Students.csv";
+    public StudentManager() {
+        DataLoader loadData = new DataLoader();
+        String storagePath = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\Repository\\Data\\Students.csv";
         listStudent.addAll(loadData.load(storagePath));
     }
 
