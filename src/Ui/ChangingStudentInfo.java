@@ -1,11 +1,11 @@
-package ui;
+package Ui;
 
-import model.Student;
+import Repository.Model.Student;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ChangeStudentInfo extends JDialog {
+public class ChangingStudentInfo extends JDialog {
 
     private JTextField txtId;
     private JTextField txtName;
@@ -18,7 +18,7 @@ public class ChangeStudentInfo extends JDialog {
     private boolean checked = false;
     private Student result;
 
-    public ChangeStudentInfo(Frame owner, Student oldInfo) {
+    public ChangingStudentInfo(Frame owner, Student oldInfo) {
         super(owner, "Sửa thông tin sinh viên", true);
         initUI(); // phải tạo component trước, rồi mới set dữ liệu pre-fill lên chúng
 

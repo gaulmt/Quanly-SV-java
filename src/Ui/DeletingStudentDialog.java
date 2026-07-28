@@ -1,15 +1,15 @@
-package ui;
+package Ui;
 
-import model.Student;
+import Repository.Model.Student;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class DeleteStudentDialog extends JDialog {
+public class DeletingStudentDialog extends JDialog {
 
     private boolean checked = false;
 
-    public DeleteStudentDialog(Frame owner, Student student) {
+    public DeletingStudentDialog(Frame owner, Student student) {
         super(owner, "Xác nhận xóa sinh viên", true);
         initUI(student);
     }

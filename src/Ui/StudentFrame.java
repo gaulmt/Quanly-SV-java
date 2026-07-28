@@ -1,13 +1,12 @@
-package ui;
+package Ui;
 
-import System.logic.ApprovalScholarShipLogic;
-import model.Student;
-import model.StudentRepository;
+import Controller.ApprovalScholarshipLogic;
+import Repository.Model.Student;
+import Repository.StudentManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 // Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
@@ -15,14 +14,14 @@ import java.util.List;
 
 public class StudentFrame extends JFrame {
 
-    private final StudentRepository repo;
-    private final ApprovalScholarShipLogic logic;
+    private final StudentManager repo;
+    private final ApprovalScholarshipLogic logic;
     private JTable table;
 
     private final String[] row = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
     private DefaultTableModel model;
 
-    public StudentFrame(StudentRepository repo, ApprovalScholarShipLogic logic) {
+    public StudentFrame(StudentManager repo, ApprovalScholarshipLogic logic) {
         super("Quản lý sinh viên");
         this.repo = repo;
         this.logic = logic;
@@ -36,7 +35,7 @@ public class StudentFrame extends JFrame {
         setMinimumSize(new Dimension(850, 450));
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(8, 8));
-        JPanel content = new JPanel(new BorderLayout(8, 8));
+        JPanel content = new JPanel(new BorderLayout(10, 10));
 
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         content.add(panelHeader(), BorderLayout.NORTH);
@@ -51,7 +50,7 @@ public class StudentFrame extends JFrame {
 
         table = new JTable(model);
         Font font = new Font("Segoe UI", Font.PLAIN, 13);
-        table.setRowHeight(20);
+        table.setRowHeight(25);
         table.setFont(font);
         table.getTableHeader().setFont(font);
         content.add(new JScrollPane(table), BorderLayout.CENTER);
@@ -102,7 +101,7 @@ public class StudentFrame extends JFrame {
     private void addNewStudent() {
         Student oldStudentInfo = null;
         while (true){
-            AddStudentDialog dlg = new AddStudentDialog(this, oldStudentInfo);
+            AddingStudentDialog dlg = new AddingStudentDialog(this, oldStudentInfo);
             dlg.setVisible(true);
             if (dlg.isChecked()) {
                 Student newInfoStudent = dlg.getResult();
@@ -155,7 +154,7 @@ public class StudentFrame extends JFrame {
                     "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        SaveFileStudentDialog save = new SaveFileStudentDialog();
+        SavingFileStudentDialog save = new SavingFileStudentDialog();
         if (!save.chooseFilePath(this)) {
             return;
         }
@@ -179,7 +178,7 @@ public class StudentFrame extends JFrame {
                 return;
             }
 
-            ChangeStudentInfo dlg = new ChangeStudentInfo(this, oldStudentInfo);
+            ChangingStudentInfo dlg = new ChangingStudentInfo(this, oldStudentInfo);
             dlg.setVisible(true);
 
             if (!dlg.isChecked()) {
@@ -212,7 +211,7 @@ public class StudentFrame extends JFrame {
         }
 
         Student studentChose = oldList.get(selectedRow);
-        DeleteStudentDialog dlg = new DeleteStudentDialog(this, studentChose);
+        DeletingStudentDialog dlg = new DeletingStudentDialog(this, studentChose);
         dlg.setVisible(true);
 
         if (!dlg.isChecked()) {

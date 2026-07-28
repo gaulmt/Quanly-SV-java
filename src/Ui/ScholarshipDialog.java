@@ -1,7 +1,7 @@
-package ui;
+package Ui;
 
-import model.ScholarshipPackage;
-import model.Student;
+import Repository.Model.ScholarshipPackage;
+import Repository.Model.Student;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,11 +1,11 @@
-package ui;
+package Ui;
 
-import model.Student;
+import Repository.Model.Student;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AddStudentDialog extends JDialog {
+public class AddingStudentDialog extends JDialog {
 
     private JTextField txtId;
     private JTextField txtName;
@@ -19,7 +19,7 @@ public class AddStudentDialog extends JDialog {
     private Student result;
 
 
-    public AddStudentDialog(JFrame owner, Student oldStudentInfo) {
+    public AddingStudentDialog(JFrame owner, Student oldStudentInfo) {
 
         super(owner, "Thêm sinh viên mới", true);
         initUI();

@@ -1,17 +1,16 @@
-package System.Data;
+package Repository.Data;
 
-import model.Student;
+import Repository.Model.Student;
 
-import javax.swing.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class SaveData {
+public class DataSaver {
 
-    String path = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\System\\Data\\Students.csv";
+    String path = "C:\\Users\\Admin\\OneDrive\\Documents\\Java\\Quanly-SV-java\\src\\Repository\\Data\\Students.csv";
 
     public void saveStudentDataByCsv(List<Student> studentList, String path) {
         File file = new File(path);

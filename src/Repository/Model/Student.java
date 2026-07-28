@@ -1,4 +1,4 @@
-package model;
+package Repository.Model;
 
 public class Student {
     private String id;

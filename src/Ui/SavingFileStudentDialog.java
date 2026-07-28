@@ -1,20 +1,20 @@
-package ui;
+package Ui;
 
-import System.Data.SaveData;
-import model.FilePath;
-import model.Student;
+import Repository.Data.DataSaver;
+import Repository.FilePath;
+import Repository.Model.Student;
 
 import javax.swing.*;
 import java.io.File;
 import java.util.List;
 
-public class SaveFileStudentDialog extends JDialog {
+public class SavingFileStudentDialog extends JDialog {
 
 
     private final FilePath filePath;
-    private final SaveData data = new SaveData();
+    private final DataSaver data = new DataSaver();
 
-    public SaveFileStudentDialog() {
+    public SavingFileStudentDialog() {
         this.filePath = new FilePath();
     }
 

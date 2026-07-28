@@ -1,13 +1,12 @@
-import model.StudentRepository;
-import model.Student;
-import System.logic.ApprovalScholarShipLogic;
-import ui.UI;
+import Repository.StudentManager;
+import Controller.ApprovalScholarshipLogic;
+import Ui.UI;
 
 public class Main {
     public static void main(String[] args) {
-        StudentRepository repo = new StudentRepository();
+        StudentManager repo = new StudentManager();
 
-        ApprovalScholarShipLogic approvalScholarShipLogic = new ApprovalScholarShipLogic();
+        ApprovalScholarshipLogic approvalScholarShipLogic = new ApprovalScholarshipLogic();
         UI menu = new UI();
         menu.run(repo, approvalScholarShipLogic);
     }

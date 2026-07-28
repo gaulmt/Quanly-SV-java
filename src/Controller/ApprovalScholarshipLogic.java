@@ -1,14 +1,14 @@
-package System.logic;
+package Controller;
 
-import model.ScholarshipPackage;
-import model.Student;
-import model.StudentRepository;
+import Repository.Model.ScholarshipPackage;
+import Repository.Model.Student;
+import Repository.StudentManager;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ApprovalScholarShipLogic {
+public class ApprovalScholarshipLogic {
 
     // xét xem sv có đủ điều kiện nhận học bổng hay không
     public List<Student> consideringScholarships(List<Student> students, List<ScholarshipPackage> list, String classRoom) {
@@ -76,7 +76,7 @@ public class ApprovalScholarShipLogic {
 
 
     // tìm sv theo ID
-    public Student findStudentById(StudentRepository repo, String id) {
+    public Student findStudentById(StudentManager repo, String id) {
         List<Student> students = repo.getAllStudents();
 
         for (Student s : students) {
