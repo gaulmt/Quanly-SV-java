@@ -7,6 +7,7 @@ import model.StudentRepository;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 // Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
@@ -90,7 +91,7 @@ public class StudentFrame extends JFrame {
 
 
         btnChangeStudentInfo.addActionListener(e -> changeStudentInfo());
-        btnDeleteStudent.addActionListener(e -> deleteStudent());
+        btnDeleteStudent.addActionListener(e -> deleteStudentInfo());
 
 
         panel.add(btnChangeStudentInfo);
@@ -202,7 +203,27 @@ public class StudentFrame extends JFrame {
         }
     }
 
-    private void deleteStudent(){
+    private void deleteStudentInfo(){
+        int selectedRow = table.getSelectedRow();
+        List<Student> oldList = repo.getAllStudents();
+
+        if (selectedRow < 0) {
+            return;
+        }
+
+        Student studentChose = oldList.get(selectedRow);
+        DeleteStudentDialog dlg = new DeleteStudentDialog(this, studentChose);
+        dlg.setVisible(true);
+
+        if (!dlg.isChecked()) {
+            return;
+        }
+
+        String id = studentChose.getId();
+        List<Student> newList = repo.deleteAStudent(id);
+
+        updateTable(newList);
+        JOptionPane.showMessageDialog(this, "Đã xóa sinh viên này ra khỏi danh sách!");
 
     }
 
