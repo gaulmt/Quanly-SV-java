@@ -5,6 +5,7 @@ import Repository.Data.DataSaver;
 import Repository.Model.Student;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class StudentManager {
@@ -48,5 +49,23 @@ public class StudentManager {
         }
         saveData.dataSaver(listStudent);
         return listStudent;
+    }
+
+    public List<Student> studentSortById(List<Student> students) {
+        students.sort(Comparator.comparing(Student::getId));
+        saveData.dataSaver(students);
+        return students;
+    }
+
+
+    public Student findStudentById(StudentManager repo, String id) {
+        List<Student> students = repo.getAllStudents();
+
+        for (Student s : students) {
+            if (s.getId().equals(id)) {
+                return s;
+            }
+        }
+        return null;
     }
 }

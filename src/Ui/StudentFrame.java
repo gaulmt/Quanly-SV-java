@@ -1,6 +1,7 @@
 package Ui;
 
 import Controller.ApprovalScholarshipLogic;
+import Repository.Data.DataSaver;
 import Repository.Model.Student;
 import Repository.StudentManager;
 
@@ -9,13 +10,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-// Cửa sổ chính: hiển thị danh sách sinh viên (JTable) + các thao tác
-// Thêm sinh viên / Xét học bổng / Sắp xếp theo MSSV.
-
 public class StudentFrame extends JFrame {
 
     private final StudentManager repo;
     private final ApprovalScholarshipLogic logic;
+    private final StudentManager studentManager = new StudentManager();
     private JTable table;
 
     private final String[] row = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ", "Học bổng"};
@@ -98,42 +97,47 @@ public class StudentFrame extends JFrame {
 
         return panel;
     }
+
+
     private void addNewStudent() {
         Student oldStudentInfo = null;
-        while (true){
-            AddingStudentDialog dlg = new AddingStudentDialog(this, oldStudentInfo);
-            dlg.setVisible(true);
-            if (dlg.isChecked()) {
-                Student newInfoStudent = dlg.getResult();
-                if (logic.findStudentById(repo, newInfoStudent.getId()) != null) {
-                    JOptionPane.showMessageDialog(this,
-                            "MSSV này đã tồn tại trong danh sách!",
-                            "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
-                    oldStudentInfo = newInfoStudent;
-                    continue;
-                }
-                List<Student> updatedList = repo.addStudent(newInfoStudent);
-                updateTable(updatedList);
+
+        while (true) {
+            AddingStudentDialog addStudentDialog = new AddingStudentDialog(this, oldStudentInfo);
+            addStudentDialog.setVisible(true);
+            if (!addStudentDialog.isChecked()) {
                 break;
             }
+            Student newStudentInfo = addStudentDialog.getResult();
+            if (studentManager.findStudentById(repo, newStudentInfo.getId()) != null) {
+                JOptionPane.showMessageDialog(this,
+                        "MSSV này đã tồn tại trong danh sách!",
+                        "Trùng MSSV", JOptionPane.WARNING_MESSAGE);
+                oldStudentInfo = newStudentInfo;
+                continue;
+            }
+            List<Student> updatedList = repo.addStudent(newStudentInfo);
+            updateTable(updatedList);
             break;
         }
+
+
     }
 
     private void scholarShipGiver() {
-        List<Student> List = repo.getAllStudents();
-        if (List.isEmpty()) {
+        List<Student> studentList = repo.getAllStudents();
+        if (studentList.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Danh sách sinh viên đang rỗng!",
                     "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        ScholarshipDialog dlg = new ScholarshipDialog(this, List);
+        ScholarshipDialog dlg = new ScholarshipDialog(this, studentList, logic);
         dlg.setVisible(true);
         if (!dlg.isChecked()) return;
 
         List<Student> result = logic.consideringScholarships(
-                List, dlg.getScholarShipList(), dlg.getStudentClass());
+                studentList, dlg.getScholarShipList(), dlg.getStudentClass());
         updateTable(result);
         JOptionPane.showMessageDialog(this,
                 "Đã xét học bổng xong cho lớp " + dlg.getStudentClass() +
@@ -141,8 +145,8 @@ public class StudentFrame extends JFrame {
     }
 
     private void sortStudentByID() {
-        logic.studentSortById(repo.getAllStudents());
-        updateTable(repo.getAllStudents());
+        List<Student> sortedStudents = studentManager.studentSortById(repo.getAllStudents());
+        updateTable(sortedStudents);
         JOptionPane.showMessageDialog(this, "Đã sắp xếp sinh viên theo MSSV!");
     }
 
@@ -172,7 +176,7 @@ public class StudentFrame extends JFrame {
             }
 
             String id = String.valueOf(model.getValueAt(selectedRow, 0));
-            Student oldStudentInfo = logic.findStudentById(repo, id);
+            Student oldStudentInfo = studentManager.findStudentById(repo, id);
 
             if (oldStudentInfo == null) {
                 return;
@@ -187,7 +191,7 @@ public class StudentFrame extends JFrame {
 
             Student newStudentInfo = dlg.getResult();
 
-            Student studentDuplicate = logic.findStudentById(repo, newStudentInfo.getId());
+            Student studentDuplicate = studentManager.findStudentById(repo, newStudentInfo.getId());
             if (studentDuplicate != null && !studentDuplicate.getId().equals(oldStudentInfo.getId())) {
                 JOptionPane.showMessageDialog(this,
                         "MSSV mới đã tồn tại trong danh sách!",

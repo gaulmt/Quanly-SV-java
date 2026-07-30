@@ -1,5 +1,6 @@
 package Ui;
 
+import Controller.ChangingStudentLogic;
 import Repository.Model.Student;
 
 import javax.swing.*;
@@ -15,8 +16,7 @@ public class ChangingStudentInfo extends JDialog {
     private JTextField txtCredits;
     private JComboBox<String> genderPack;
 
-    private boolean checked = false;
-    private Student result;
+    private ChangingStudentLogic logic;
 
     public ChangingStudentInfo(Frame owner, Student oldInfo) {
         super(owner, "Sửa thông tin sinh viên", true);
@@ -49,6 +49,9 @@ public class ChangingStudentInfo extends JDialog {
         txtTrainingPoint = new JTextField(16);
         txtCredits = new JTextField(16);
 
+        logic = new ChangingStudentLogic(this, txtId, txtName, txtClass,
+                genderPack, txtGpa, txtTrainingPoint, txtCredits);
+
         String[] labels = {"MSSV", "Họ và tên", "Lớp", "Giới tính", "GPA", "Điểm rèn luyện", "Tín chỉ"};
         JComponent[] fields = {txtId, txtName, txtClass, genderPack, txtGpa, txtTrainingPoint, txtCredits};
 
@@ -74,8 +77,7 @@ public class ChangingStudentInfo extends JDialog {
         JButton btnConfirm = new JButton("Xác nhận");
         JButton btnCancel = new JButton("Hủy");
 
-        btnConfirm.addActionListener(e -> validateInput());
-
+        btnConfirm.addActionListener(e -> logic.validateInput());
         btnCancel.addActionListener(e -> dispose());
 
         panel.add(btnConfirm);
@@ -83,50 +85,11 @@ public class ChangingStudentInfo extends JDialog {
         return panel;
     }
 
-    private void validateInput() {
-
-        String id = txtId.getText().trim();
-        String name = txtName.getText().trim();
-        String classRoom = txtClass.getText().trim();
-        String gender = (String) genderPack.getSelectedItem();
-        if (id.isEmpty() || name.trim().isEmpty() || classRoom.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "MSSV , Họ tên và lớp học không được để trống!",
-                    "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        try {
-            double gpa = Double.parseDouble(txtGpa.getText().trim());
-            int traningPoint = Integer.parseInt(txtTrainingPoint.getText().trim());
-            int credits = Integer.parseInt(txtCredits.getText().trim());
-            if (gpa < 0 || gpa > 4) {
-                JOptionPane.showMessageDialog( this ,"GPA phải nằm trong khoảng 0 đến 4!");
-                return;
-            }
-            if (traningPoint < 0 || traningPoint > 100) {
-                JOptionPane.showMessageDialog(this ,"Điểm rèn luyện phải nằm trong khoảng 0 đến 100!");
-                return;
-            }
-            if (credits < 0) {
-                JOptionPane.showMessageDialog(this ,"Số tín chỉ không được âm!");
-                return;
-            }
-
-            result = new Student(id, name, classRoom, gender, gpa, traningPoint, credits);
-            checked = true;
-            dispose();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "GPA / Điểm rèn luyện / Tín chỉ phải là số hợp lệ!",
-                    "Sai định dạng", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
-
     public boolean isChecked() {
-        return checked;
+        return logic.isChecked();
     }
 
     public Student getResult() {
-        return result;
+        return logic.getResult();
     }
 }
-

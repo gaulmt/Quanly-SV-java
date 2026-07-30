@@ -1,5 +1,6 @@
 package Ui;
 
+import Controller.ApprovalScholarshipLogic;
 import Repository.Model.ScholarshipPackage;
 import Repository.Model.Student;
 
@@ -9,27 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Form Swing: chọn lớp cần xét học bổng + nhập số suất (quota) cho từng loại.
-
 public class ScholarshipDialog extends JDialog {
 
-    private JComboBox<String> classPack;
-    private JTextField txtExcellent;
-    private JTextField txtGood;
-    private JTextField txtFairlyGood;
+    private final ApprovalScholarshipLogic logic;
 
-    private boolean checked = false;
-    private String studentClass;
-    private List<ScholarshipPackage> scholarShipList;
-
-    public ScholarshipDialog(Frame owner, List<Student> studentList) {
+    public ScholarshipDialog(Frame owner, List<Student> studentList, ApprovalScholarshipLogic logic) {
         super(owner, "Xét học bổng theo lớp", true);
+        this.logic = logic;
+        this.logic.reset();
         initUI(studentList);
         pack();
         setLocationRelativeTo(owner);
     }
 
     private void initUI(List<Student> studentList) {
-        // Lấy danh sách lớp không trùng lặp từ danh sách sinh viên hiện có
         List<String> studentClassList = new ArrayList<>();
         for (Student s : studentList) {
             String studentClass = s.getClassRoom().toUpperCase();
@@ -39,7 +33,7 @@ public class ScholarshipDialog extends JDialog {
         }
         studentClassList.sort(String::compareTo);
 
-        List<ScholarshipPackage> Default = ScholarshipPackage.getScholarshipList();
+        List<ScholarshipPackage> defaultScholarshipList = ScholarshipPackage.getScholarshipList();
 
         JPanel form = new JPanel(new GridBagLayout());
         form.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -47,10 +41,10 @@ public class ScholarshipDialog extends JDialog {
         c.insets = new Insets(6, 6, 6, 6);
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        classPack = new JComboBox<>(studentClassList.toArray(new String[0]));
-        txtExcellent = new JTextField(String.valueOf(Default.get(0).getQuota()), 8);
-        txtGood = new JTextField(String.valueOf(Default.get(1).getQuota()), 8);
-        txtFairlyGood = new JTextField(String.valueOf(Default.get(2).getQuota()), 8);
+        JComboBox<String> classPack = new JComboBox<>(studentClassList.toArray(new String[0]));
+        JTextField txtExcellent = new JTextField(String.valueOf(defaultScholarshipList.get(0).getQuota()), 8);
+        JTextField txtGood = new JTextField(String.valueOf(defaultScholarshipList.get(1).getQuota()), 8);
+        JTextField txtFairlyGood = new JTextField(String.valueOf(defaultScholarshipList.get(2).getQuota()), 8);
 
         int row = 0;
         addRow(form, c, row++, "Chọn lớp:", classPack);
@@ -60,7 +54,8 @@ public class ScholarshipDialog extends JDialog {
 
         JButton btnScholarShipGiver = new JButton("Xét học bổng");
         JButton btnCancel = new JButton("Hủy");
-        btnScholarShipGiver.addActionListener(e -> onCheck(Default));
+        btnScholarShipGiver.addActionListener(e ->
+                logic.onCheck(this, classPack, txtExcellent, txtGood, txtFairlyGood, defaultScholarshipList));
         btnCancel.addActionListener(e -> dispose());
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -80,47 +75,15 @@ public class ScholarshipDialog extends JDialog {
         form.add(field, c);
     }
 
-    private void onCheck(List<ScholarshipPackage> Default) {
-        if (classPack.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(this, "Chưa có lớp nào trong danh sách sinh viên!",
-                    "Không có dữ liệu", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        try {
-            int quotaExcellent = Integer.parseInt(txtExcellent.getText().trim());
-            int quotaGood = Integer.parseInt(txtGood.getText().trim());
-            int quotaFairlyGood = Integer.parseInt(txtFairlyGood.getText().trim());
-
-            if (quotaExcellent < 0 || quotaGood < 0 || quotaFairlyGood < 0) {
-                JOptionPane.showMessageDialog(this, "Số suất học bổng không được là số âm!",
-                        "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Default.get(0).setQuota(quotaExcellent);
-            Default.get(1).setQuota(quotaGood);
-            Default.get(2).setQuota(quotaFairlyGood);
-
-            scholarShipList = Default;
-            studentClass = (String) classPack.getSelectedItem();
-            checked = true;
-            dispose();
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Số suất học bổng phải là số nguyên!",
-                    "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
-        }
-    }
-
     public boolean isChecked() {
-        return checked;
+        return logic.isChecked();
     }
 
     public String getStudentClass() {
-        return studentClass;
+        return logic.getStudentClass();
     }
 
     public List<ScholarshipPackage> getScholarShipList() {
-        return scholarShipList;
+        return logic.getScholarShipList();
     }
 }

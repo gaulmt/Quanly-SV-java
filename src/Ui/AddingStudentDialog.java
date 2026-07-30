@@ -1,5 +1,6 @@
 package Ui;
 
+import Controller.AddingStudentLogic;
 import Repository.Model.Student;
 
 import javax.swing.*;
@@ -7,35 +8,18 @@ import java.awt.*;
 
 public class AddingStudentDialog extends JDialog {
 
-    private JTextField txtId;
-    private JTextField txtName;
-    private JTextField txtClass;
-    private JTextField txtGpa;
-    private JTextField txtTrainingPoint;
-    private JTextField txtCredits;
-    private JComboBox<String> genderPack;
+    private AddingStudentLogic logic;
 
-    private boolean checked = false;
-    private Student result;
-
-
-    public AddingStudentDialog(JFrame owner, Student oldStudentInfo) {
-
+    public AddingStudentDialog(JFrame owner) {
         super(owner, "Thêm sinh viên mới", true);
         initUI();
-        if (oldStudentInfo != null) {
-            txtId.setText(oldStudentInfo.getId());
-            txtName.setText(oldStudentInfo.getName());
-            txtClass.setText(oldStudentInfo.getClassRoom());
-            genderPack.setSelectedItem(oldStudentInfo.getGender());
-            txtGpa.setText(String.valueOf(oldStudentInfo.getGpa()));
-            txtTrainingPoint.setText(String.valueOf(oldStudentInfo.getTrainingPoint()));
-            txtCredits.setText(String.valueOf(oldStudentInfo.getCredits()));
-            txtId.selectAll();
-            txtId.requestFocusInWindow();
-        }
         pack();
         setLocationRelativeTo(owner);
+    }
+
+    public AddingStudentDialog(JFrame owner, Student oldStudentInfo) {
+        this(owner);
+        logic.oldStudentInfo(oldStudentInfo);
     }
 
     private void initUI() {
@@ -45,13 +29,16 @@ public class AddingStudentDialog extends JDialog {
         c.insets = new Insets(5, 5, 5, 5);
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        txtId = new JTextField(16);
-        txtName = new JTextField(16);
-        txtClass = new JTextField(16);
-        genderPack = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
-        txtGpa = new JTextField(16);
-        txtTrainingPoint = new JTextField(16);
-        txtCredits = new JTextField(16);
+        JTextField txtId = new JTextField(16);
+        JTextField txtName = new JTextField(16);
+        JTextField txtClass = new JTextField(16);
+        JComboBox<String> genderPack = new JComboBox<>(new String[]{"Nam", "Nữ", "Khác"});
+        JTextField txtGpa = new JTextField(16);
+        JTextField txtTrainingPoint = new JTextField(16);
+        JTextField txtCredits = new JTextField(16);
+
+        logic = new AddingStudentLogic(this, txtId, txtName, txtClass,
+                genderPack, txtGpa, txtTrainingPoint, txtCredits);
 
         int row = 0;
         addRow(form, c, row++, "MSSV:", txtId);
@@ -64,7 +51,7 @@ public class AddingStudentDialog extends JDialog {
 
         JButton btnSave = new JButton("Lưu");
         JButton btnCancel = new JButton("Hủy");
-        btnSave.addActionListener(e -> onSave());
+        btnSave.addActionListener(e -> logic.addStudent());
         btnCancel.addActionListener(e -> dispose());
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -84,57 +71,11 @@ public class AddingStudentDialog extends JDialog {
         form.add(field, c);
     }
 
-    private void onSave() {
-        String id = txtId.getText().trim();
-        String name = txtName.getText().trim();
-        String classRoom = txtClass.getText().trim();
-        String gender = (String) genderPack.getSelectedItem();
-
-        if (id.isEmpty() || name.isEmpty() || classRoom.isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Vui lòng nhập đầy đủ MSSV, Họ tên và Lớp!",
-                    "Thiếu thông tin", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        try {
-            double gpa = Double.parseDouble(txtGpa.getText().trim());
-            int traningPoint = Integer.parseInt(txtTrainingPoint.getText().trim());
-            int credits = Integer.parseInt(txtCredits.getText().trim());
-
-            if (gpa < 0 || gpa > 4) {
-                warning("GPA phải nằm trong khoảng 0 đến 4!");
-                return;
-            }
-            if (traningPoint < 0 || traningPoint > 100) {
-                warning("Điểm rèn luyện phải nằm trong khoảng 0 đến 100!");
-                return;
-            }
-            if (credits < 0) {
-                warning("Số tín chỉ không được âm!");
-                return;
-            }
-
-            result = new Student(id, name, classRoom, gender, gpa, traningPoint, credits);
-            checked = true;
-            dispose();
-
-        } catch (NumberFormatException ex) {
-            warning("GPA, Điểm rèn luyện và Số tín chỉ phải là số hợp lệ!");
-        }
-    }
-
-
-    private void warning(String message) {
-        JOptionPane.showMessageDialog(this, message, "Dữ liệu không hợp lệ", JOptionPane.WARNING_MESSAGE);
-    }
-
-
     public boolean isChecked() {
-        return checked;
+        return logic.isChecked();
     }
 
     public Student getResult() {
-        return result;
+        return logic.getResult();
     }
 }
